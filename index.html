@@ -2,16 +2,11 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Music Up — Macan Playlist</title>
+  <title>Music Up — Жанры и Macan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #000;
-      color: #fff;
-      overflow-x: hidden;
-    }
+    body { font-family: 'Segoe UI', sans-serif; background-color: #000; color: #fff; overflow-x: hidden; }
 
     header {
       background-color: #111;
@@ -56,9 +51,7 @@
       font-size: 16px;
     }
 
-    nav a:hover {
-      color: #40e0d0;
-    }
+    nav a:hover { color: #40e0d0; }
 
     h1 {
       text-align: center;
@@ -67,12 +60,22 @@
       font-size: 28px;
     }
 
-    .genres, .playlist {
+    .genres-section {
+      padding: 20px;
+    }
+
+    .genre-title {
+      color: #40e0d0;
+      font-size: 22px;
+      margin: 20px 10px 10px;
+    }
+
+    .playlist {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 20px;
-      padding: 10px 20px;
+      justify-content: center;
+      padding: 10px 0;
     }
 
     .card {
@@ -111,9 +114,7 @@
       cursor: pointer;
     }
 
-    .play-btn:hover {
-      background-color: #1ed760;
-    }
+    .play-btn:hover { background-color: #1ed760; }
 
     audio {
       width: 100%;
@@ -150,28 +151,75 @@
 
   <h1>Music Up</h1>
 
-  <!-- Плейлист Macan -->
-  <div class="playlist" id="playlist">
-    <div class="card" data-title="L" data-artist="Macan">
-      <img class="cover" src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
-      <div class="title">L</div>
-      <div class="artist">Macan</div>
-      <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1iX95z5SQfOM')">▶️ Играть</button>
+  <div class="genres-section">
+
+    <!-- Поп -->
+    <div class="genre-title">Поп</div>
+    <div class="playlist">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=400&q=80" alt="Поп">
+        <div class="title">Поп Музыка</div>
+        <div class="artist">Поп Артист</div>
+        <button class="play-btn">▶️ Играть</button>
+      </div>
     </div>
 
-    <div class="card" data-title="Заново" data-artist="Macan">
-      <img class="cover" src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
-      <div class="title">Заново</div>
-      <div class="artist">Macan</div>
-      <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1Z155EzK1A4u')">▶️ Играть</button>
+    <!-- Рок -->
+    <div class="genre-title">Рок</div>
+    <div class="playlist">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1511376777868-611b54f68947?auto=format&fit=crop&w=400&q=80" alt="Рок">
+        <div class="title">Рок Хит</div>
+        <div class="artist">Рок Группа</div>
+        <button class="play-btn">▶️ Играть</button>
+      </div>
     </div>
 
-    <div class="card" data-title="Останься образом" data-artist="Macan">
-      <img class="cover" src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
-      <div class="title">Останься образом</div>
-      <div class="artist">Macan</div>
-      <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1fNWBhahQ6Mo')">▶️ Играть</button>
+    <!-- Lo-fi -->
+    <div class="genre-title">Lo-fi</div>
+    <div class="playlist">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80" alt="Lo-fi">
+        <div class="title">Lo-fi Chill</div>
+        <div class="artist">Lo-fi Beats</div>
+        <button class="play-btn">▶️ Играть</button>
+      </div>
     </div>
+
+    <!-- Джаз -->
+    <div class="genre-title">Джаз</div>
+    <div class="playlist">
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1525286116112-b59af11adad1?auto=format&fit=crop&w=400&q=80" alt="Джаз">
+        <div class="title">Smooth Jazz</div>
+        <div class="artist">Jazz Band</div>
+        <button class="play-btn">▶️ Играть</button>
+      </div>
+    </div>
+
+    <!-- Хип-хоп / Рэп -->
+    <div class="genre-title">Хип-хоп / Рэп</div>
+    <div class="playlist">
+      <div class="card" data-title="L" data-artist="Macan">
+        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
+        <div class="title">L</div>
+        <div class="artist">Macan</div>
+        <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1iX95z5SQfOM')">▶️ Играть</button>
+      </div>
+      <div class="card" data-title="Заново" data-artist="Macan">
+        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
+        <div class="title">Заново</div>
+        <div class="artist">Macan</div>
+        <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1Z155EzK1A4u')">▶️ Играть</button>
+      </div>
+      <div class="card" data-title="Останься образом" data-artist="Macan">
+        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
+        <div class="title">Останься образом</div>
+        <div class="artist">Macan</div>
+        <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1fNWBhahQ6Mo')">▶️ Играть</button>
+      </div>
+    </div>
+
   </div>
 
   <audio id="player" controls></audio>
@@ -188,9 +236,9 @@
     function searchSongs(query) {
       query = query.toLowerCase();
       document.querySelectorAll('.card').forEach(card => {
-        const title = card.dataset.title?.toLowerCase() || '';
-        const artist = card.dataset.artist?.toLowerCase() || '';
-        card.style.display = (title.includes(query) || artist.includes(query)) ? 'block' : 'none';
+        const t = card.dataset.title?.toLowerCase() || '';
+        const a = card.dataset.artist?.toLowerCase() || '';
+        card.style.display = (t.includes(query) || a.includes(query)) ? 'block' : 'none';
       });
     }
 
