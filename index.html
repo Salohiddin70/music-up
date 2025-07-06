@@ -13,7 +13,6 @@
       padding-bottom: 120px;
       min-height: 100vh;
     }
-
     header {
       background: rgba(0, 0, 0, 0.6);
       display: flex;
@@ -24,28 +23,19 @@
       top: 0;
       z-index: 100;
     }
-
     .menu-icon, .profile-icon {
       width: 28px;
       height: 28px;
       cursor: pointer;
       fill: #40e0d0;
-      background-color: rgba(0, 0, 0, 0.4);
       border-radius: 50%;
       padding: 6px;
-      box-shadow: 0 0 6px #40e0d0;
       transition: background 0.3s;
     }
-
-    .menu-icon:hover, .profile-icon:hover {
-      background-color: rgba(64, 224, 208, 0.2);
-    }
-
     .search-bar {
       flex: 1;
       text-align: center;
     }
-
     .search-bar input {
       padding: 8px 15px;
       width: 70%;
@@ -55,7 +45,6 @@
       font-size: 14px;
       outline: none;
     }
-
     nav.side-menu {
       position: fixed;
       top: 0;
@@ -70,84 +59,79 @@
       transition: left 0.3s;
       z-index: 1000;
     }
-
     nav.side-menu.open {
       left: 0;
     }
-
     nav.side-menu a {
       color: #ccc;
       text-decoration: none;
       font-size: 16px;
     }
-
     nav.side-menu a:hover {
       color: #40e0d0;
     }
-
     h1 {
       text-align: center;
       color: #40e0d0;
       margin: 20px 0;
-      font-size: 26px;
+      font-size: 32px;
+      text-shadow: 0 0 8px #40e0d0, 0 0 16px #1db954;
     }
-
     .genre-menu {
       display: flex;
       overflow-x: auto;
       white-space: nowrap;
       gap: 10px;
       padding: 10px;
-      background-color: rgba(0,0,0,0.2);
-      scrollbar-width: none;
+      background-color: rgba(0,0,0,0.3);
     }
-
     .genre-menu::-webkit-scrollbar {
       display: none;
     }
-
     .genre-button {
       padding: 8px 16px;
-      background: linear-gradient(90deg, #40e0d0, #1db954);
-      color: #fff;
+      background: transparent;
+      color: #40e0d0;
+      border: 1px solid #40e0d0;
       border-radius: 20px;
       text-decoration: none;
       flex-shrink: 0;
+      box-shadow: 0 0 6px #40e0d0;
+      transition: background 0.3s;
     }
-
+    .genre-button:hover {
+      background-color: rgba(64, 224, 208, 0.1);
+    }
     .track-list {
       padding: 20px;
     }
-
     .track {
       background-color: rgba(0,0,0,0.4);
+      border: 1px solid rgba(64, 224, 208, 0.2);
       border-radius: 10px;
       padding: 12px;
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 0 10px rgba(64, 224, 208, 0.15);
     }
-
     .track-title {
       font-size: 15px;
     }
-
     .track button {
-      background-color: #1db954;
+      background-color: transparent;
       border: none;
-      padding: 6px 12px;
-      border-radius: 20px;
-      color: white;
+      color: #40e0d0;
       cursor: pointer;
+      font-size: 20px;
     }
-
     #player-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
@@ -155,64 +139,55 @@
       padding: 10px 20px;
       z-index: 1001;
     }
-
     #player-bar img {
       height: 50px;
       border-radius: 5px;
       margin-right: 10px;
     }
-
     #player-info {
       flex: 1;
       display: flex;
       align-items: center;
     }
-
     #player-controls {
       display: flex;
       align-items: center;
       gap: 15px;
     }
-
     #player-controls button {
       background: none;
       border: none;
-      color: white;
+      color: #fff;
       cursor: pointer;
-      padding: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       transition: color 0.3s;
     }
-
     #player-controls button:hover {
-      color: #1db954;
+      color: #40e0d0;
     }
-
     #player-controls svg {
+      width: 26px;
+      height: 26px;
       stroke: currentColor;
-      width: 24px;
-      height: 24px;
       stroke-width: 2.5;
-      stroke-linejoin: round;
+      fill: none;
       stroke-linecap: round;
+      stroke-linejoin: round;
     }
   </style>
 </head>
 <body onclick="closeMenu(event)">
   <header>
-    <svg class="menu-icon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <line x1="3" y1="12" x2="21" y2="12" />
-      <line x1="3" y1="18" x2="21" y2="18" />
+    <svg class="menu-icon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
     </svg>
     <div class="search-bar">
       <input type="text" placeholder="Поиск..." oninput="searchTracks(this.value)" />
     </div>
-    <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-      <circle cx="12" cy="7" r="4" />
-      <path d="M5.5 21h13a2 2 0 0 0-13 0z" />
+    <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <circle cx="12" cy="7" r="4"/>
+      <path d="M5.5 21h13a2 2 0 0 0-13 0z"/>
     </svg>
   </header>
 
@@ -249,14 +224,13 @@
       <div id="track-name">Трек</div>
     </div>
     <div id="player-controls">
-      <button id="play-pause-btn" onclick="togglePlayPause()" aria-label="Play/Pause">
-        <!-- Иконка будет динамически обновляться -->
-        <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <button onclick="togglePlayPause()" aria-label="Play/Pause">
+        <svg id="play-icon" viewBox="0 0 24 24">
           <polygon points="5 3 19 12 5 21 5 3" />
         </svg>
       </button>
-      <button id="next-btn" onclick="playNext()" aria-label="Next track">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <button onclick="playNext()" aria-label="Next">
+        <svg viewBox="0 0 24 24">
           <polygon points="5 4 15 12 5 20 5 4" />
           <line x1="19" y1="4" x2="19" y2="20" />
         </svg>
@@ -271,17 +245,13 @@
     const playerBar = document.getElementById("player-bar");
     const trackName = document.getElementById("track-name");
     const trackImg = document.getElementById("track-img");
+    const playIcon = document.getElementById("play-icon");
     const sideMenu = document.getElementById("side-menu");
 
-    const playPauseBtn = document.getElementById("play-pause-btn");
-    const playIcon = document.getElementById("play-icon");
-
-    // Плейлист для примера
     const playlist = [
       { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
       { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-      { title: "Macan — Останься образом", url: "https://media.vocaroo.com/mp3/1fNWBhahQ6Mo", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" }
+      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" }
     ];
 
     let currentTrackIndex = 0;
@@ -294,7 +264,6 @@
       trackImg.src = img;
       updatePlayPauseIcon(true);
       currentTrackIndex = playlist.findIndex(t => t.url === url);
-      if (currentTrackIndex === -1) currentTrackIndex = 0;
     }
 
     function togglePlayPause() {
@@ -308,21 +277,13 @@
     }
 
     function updatePlayPauseIcon(isPlaying) {
-      if (isPlaying) {
-        // Показать паузу
-        playIcon.innerHTML = `
-          <rect x="6" y="4" width="4" height="16" />
-          <rect x="14" y="4" width="4" height="16" />
-        `;
-      } else {
-        // Показать плей
-        playIcon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3" />`;
-      }
+      playIcon.innerHTML = isPlaying
+        ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
+        : '<polygon points="5 3 19 12 5 21 5 3"/>';
     }
 
     function playNext() {
-      currentTrackIndex++;
-      if (currentTrackIndex >= playlist.length) currentTrackIndex = 0;
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       const track = playlist[currentTrackIndex];
       playTrack(track.url, track.title, track.img);
     }
@@ -343,8 +304,8 @@
     }
 
     function showGenre(genre) {
-      document.getElementById("new-releases").style.display = "none";
       const container = document.getElementById("genre-tracks");
+      document.getElementById("new-releases").style.display = "none";
       container.innerHTML = "";
       const songs = genres[genre] || [];
       songs.forEach(track => {
@@ -365,9 +326,7 @@
       lofi: []
     };
 
-    // Автоматически переключать трек, когда текущий закончится
     player.addEventListener('ended', playNext);
-
   </script>
 </body>
 </html>
