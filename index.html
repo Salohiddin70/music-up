@@ -105,6 +105,7 @@
       border-radius: 20px;
       box-shadow: 0 0 10px #40e0d0;
       transition: background 0.3s, box-shadow 0.3s;
+      white-space: nowrap;
     }
     .genre-button:hover {
       background: rgba(64,224,208,0.1);
@@ -133,6 +134,7 @@
       color: #40e0d0;
       font-size: 22px;
       transition: color 0.3s;
+      cursor: pointer;
     }
     .track button:hover {
       color: #1db954;
@@ -150,6 +152,10 @@
       padding: 10px 20px;
       box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
       z-index: 1001;
+    }
+    #player-info {
+      display: flex;
+      align-items: center;
     }
     #player-info img {
       height: 50px;
@@ -192,7 +198,9 @@
     <div class="search-bar">
       <input type="text" placeholder="Поиск..." />
     </div>
-    <div class="profile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg></div>
+    <div class="profile-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg>
+    </div>
   </header>
 
   <nav class="side-menu" id="side-menu">
@@ -244,6 +252,7 @@
     const trackImg = document.getElementById("track-img");
     const playIcon = document.getElementById("play-icon");
     const sideMenu = document.getElementById("side-menu");
+
     const playlist = [
       { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
       { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
@@ -298,7 +307,13 @@
       document.getElementById("genre-tracks").innerHTML = "";
     }
 
-    const genres = { hiphop: playlist, rap: [], jazz: [], lofi: [] };
+    const genres = {
+      hiphop: [playlist[0]],
+      rap: [playlist[1]],
+      jazz: [],
+      lofi: [playlist[2]]
+    };
+
     function showGenre(genre) {
       document.getElementById("new-releases").style.display = "none";
       const container = document.getElementById("genre-tracks");
