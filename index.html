@@ -5,124 +5,28 @@
   <title>Music Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-      padding-bottom: 80px;
-    }
+    /* Общий стиль */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; }
+    header { text-align: center; padding: 30px 20px 10px; font-size: 32px; font-weight: bold; color: #40e0d0; }
+    .genres { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px 10px; }
+    .card { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 10px; width: 45%; max-width: 180px; text-align: center; box-shadow: 0 0 10px rgba(0,0,0,0.4); transition: .2s; }
+    .card:hover { transform: scale(1.03); }
+    .genre-img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+    .genre-title { font-size: 14px; color: #ccc; }
 
-    header {
-      text-align: center;
-      padding: 30px 20px 10px;
-      font-size: 32px;
-      font-weight: bold;
-      color: #40e0d0;
-    }
+    /* Нижняя навигация */
+    footer { position: fixed; bottom: 0; left: 0; right: 0; background: #111; padding: 10px 0; display: flex; justify-content: space-around; border-top: 1px solid #333; z-index: 100 }
+    footer a { color: #ccc; text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; }
+    footer a:hover { color: #40e0d0; }
+    .icon { font-size: 20px; margin-bottom: 3px; }
 
-    .genres {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      padding: 20px 10px;
-    }
+    /* Всплывающее меню */
+    #popupMenu { display: none; position: fixed; bottom: 70px; left: 10px; right: 10px; background: #222; padding: 15px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.5); z-index: 99 }
+    #popupMenu a { display: block; color: #fff; padding: 10px 0; text-decoration: none; font-size: 16px; }
+    #popupMenu a:hover { color: #40e0d0; }
 
-    .card {
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 10px;
-      width: 45%;
-      max-width: 180px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      transition: transform 0.2s;
-    }
-
-    .card:hover {
-      transform: scale(1.03);
-    }
-
-    .genre-img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 8px;
-      height: 120px;
-      object-fit: cover;
-    }
-
-    .genre-title {
-      font-size: 14px;
-      color: #ccc;
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: #111;
-      padding: 10px 0;
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid #333;
-      z-index: 100;
-    }
-
-    footer a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    footer a:hover {
-      color: #40e0d0;
-    }
-
-    .icon {
-      font-size: 20px;
-      margin-bottom: 3px;
-    }
-
-    #popupMenu {
-      display: none;
-      position: fixed;
-      bottom: 70px;
-      left: 10px;
-      right: 10px;
-      background-color: #222;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      z-index: 99;
-    }
-
-    #popupMenu a {
-      display: block;
-      color: #fff;
-      padding: 10px 0;
-      text-decoration: none;
-      font-size: 16px;
-    }
-
-    #popupMenu a:hover {
-      color: #40e0d0;
-    }
-
-    @media (max-width: 480px) {
-      .card {
-        width: 100%;
-        max-width: none;
-      }
-    }
+    @media (max-width: 480px) { .card { width: 100%; max-width: none; } }
   </style>
 </head>
 <body>
@@ -131,27 +35,27 @@
 
   <section class="genres">
     <div class="card">
-      <img class="genre-img" src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Macan_artist_photo.jpg" alt="Macan">
+      <img class="genre-img" src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Macan_in_June_2021.png" alt="Macan">
       <div class="genre-title">Macan</div>
     </div>
     <div class="card">
-      <img class="genre-img" src="https://images.unsplash.com/photo-1598387840551-197b2215f8cf?auto=format&fit=crop&w=800&q=60" alt="Hip-Hop">
-      <div class="genre-title">Hip-Hop</div>
+      <img class="genre-img" src="https://images.unsplash.com/photo-1598387840551-197b2215f8cf?auto=format&fit=crop&w=400&q=60" alt="Hip-Hop">
+      <div class="genre-title">Hip‑Hop</div>
     </div>
     <div class="card">
-      <img class="genre-img" src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=800&q=60" alt="Поп">
+      <img class="genre-img" src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=400&q=60" alt="Поп">
       <div class="genre-title">Поп</div>
     </div>
     <div class="card">
-      <img class="genre-img" src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92a62?auto=format&fit=crop&w=800&q=60" alt="Lo-Fi">
-      <div class="genre-title">Lo-Fi</div>
+      <img class="genre-img" src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92a62?auto=format&fit=crop&w=400&q=60" alt="Lo-Fi">
+      <div class="genre-title">Lo‑Fi</div>
     </div>
     <div class="card">
-      <img class="genre-img" src="https://images.unsplash.com/photo-1511376777868-611b54f68947?auto=format&fit=crop&w=800&q=60" alt="Рок">
+      <img class="genre-img" src="https://images.unsplash.com/photo-1511376777868-611b54f68947?auto=format&fit=crop&w=400&q=60" alt="Рок">
       <div class="genre-title">Рок</div>
     </div>
     <div class="card">
-      <img class="genre-img" src="https://images.unsplash.com/photo-1525186402429-95b3692836ec?auto=format&fit=crop&w=800&q=60" alt="Джаз">
+      <img class="genre-img" src="https://images.unsplash.com/photo-1525186402429-95b3692836ec?auto=format&fit=crop&w=400&q=60" alt="Джаз">
       <div class="genre-title">Джаз</div>
     </div>
   </section>
@@ -174,7 +78,7 @@
   <script>
     function toggleMenu() {
       const menu = document.getElementById("popupMenu");
-      menu.style.display = (menu.style.display === "none") ? "block" : "none";
+      menu.style.display = menu.style.display === "none" ? "block" : "none";
     }
   </script>
 
