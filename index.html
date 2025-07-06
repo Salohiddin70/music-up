@@ -113,6 +113,7 @@
       border-radius: 20px;
       text-decoration: none;
       flex-shrink: 0;
+      cursor: pointer;
     }
 
     .track-list {
@@ -172,9 +173,15 @@
       background: none;
       border: none;
       color: white;
-      font-size: 20px;
+      font-size: 24px;
       margin: 0 10px;
       cursor: pointer;
+      user-select: none;
+      transition: color 0.3s;
+    }
+
+    #player-controls button:hover {
+      color: #1db954;
     }
   </style>
 </head>
@@ -220,12 +227,12 @@
 
   <div id="player-bar" style="display:none;">
     <div id="player-info">
-      <img src="" id="track-img" alt="Обложка">
+      <img src="" id="track-img" alt="Обложка" />
       <div id="track-name">Трек</div>
     </div>
     <div id="player-controls">
-      <button onclick="player.pause()">⏸️</button>
-      <button onclick="player.play()">▶️</button>
+      <button id="play-pause-btn" onclick="togglePlayPause()">▶️</button>
+      <button onclick="playNextTrack()">⏭️</button>
     </div>
   </div>
 
@@ -238,12 +245,46 @@
     const trackImg = document.getElementById("track-img");
     const sideMenu = document.getElementById("side-menu");
 
-    function playTrack(url, name, img) {
+    let currentGenre = null;
+    let currentTrackIndex = -1;
+
+    function playTrack(url, name, img, genre = null, index = -1) {
       player.src = url;
       player.play();
       playerBar.style.display = "flex";
       trackName.textContent = name;
       trackImg.src = img;
+
+      currentGenre = genre;
+      currentTrackIndex = index;
+
+      updatePlayPauseIcon();
+    }
+
+    function togglePlayPause() {
+      if (player.paused) {
+        player.play();
+      } else {
+        player.pause();
+      }
+      updatePlayPauseIcon();
+    }
+
+    function updatePlayPauseIcon() {
+      const btn = document.getElementById("play-pause-btn");
+      btn.textContent = player.paused ? "▶️" : "⏸️";
+    }
+
+    function playNextTrack() {
+      if (!currentGenre || currentTrackIndex === -1) return;
+      const tracks = genres[currentGenre];
+      if (!tracks || tracks.length === 0) return;
+
+      let nextIndex = currentTrackIndex + 1;
+      if (nextIndex >= tracks.length) nextIndex = 0; // зациклить
+
+      const nextTrack = tracks[nextIndex];
+      playTrack(nextTrack.url, nextTrack.title, nextTrack.img, currentGenre, nextIndex);
     }
 
     function toggleMenu() {
@@ -257,26 +298,31 @@
     }
 
     function goHome() {
+      currentGenre = null;
+      currentTrackIndex = -1;
       document.getElementById("new-releases").style.display = "block";
       document.getElementById("genre-tracks").innerHTML = "";
     }
 
     function showGenre(genre) {
+      currentGenre = genre;
+      currentTrackIndex = -1;
       document.getElementById("new-releases").style.display = "none";
       const container = document.getElementById("genre-tracks");
       container.innerHTML = "";
       const songs = genres[genre] || [];
-      songs.forEach(track => {
+      songs.forEach((track, index) => {
         const div = document.createElement("div");
         div.className = "track";
         div.innerHTML = `
           <span class="track-title">${track.title}</span>
-          <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}')">▶️</button>
+          <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}', '${genre}', ${index})">▶️</button>
         `;
         container.appendChild(div);
       });
     }
 
+    // Жанры и треки
     const genres = {
       hiphop: [
         { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
