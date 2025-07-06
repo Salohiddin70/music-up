@@ -13,181 +13,89 @@
       padding-bottom: 120px;
       min-height: 100vh;
     }
+    header, .menu-icon, .profile-icon, .search-bar input, nav.side-menu, h1,
+    .genre-menu, .genre-button, .track, #player-bar, #player-controls button, #player-controls svg {
+      transition: all 0.3s ease;
+    }
     header {
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px; position: sticky; top: 0; z-index: 100;
     }
     .menu-icon, .profile-icon {
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      stroke: #40e0d0;
-      background: rgba(0,0,0,0.4);
-      border-radius: 50%;
-      padding: 6px;
+      width: 30px; height: 30px; cursor: pointer; stroke: #40e0d0;
+      background: rgba(0,0,0,0.4); border-radius: 50%; padding: 6px;
       box-shadow: 0 0 12px #40e0d0;
-      transition: background 0.3s, box-shadow 0.3s;
     }
     .menu-icon:hover, .profile-icon:hover {
-      background: rgba(64,224,208,0.2);
-      box-shadow: 0 0 16px #40e0d0;
+      background: rgba(64,224,208,0.2); box-shadow: 0 0 16px #40e0d0;
     }
     .menu-icon svg, .profile-icon svg {
-      width: 100%;
-      height: 100%;
-      stroke-width: 2.5;
+      width: 100%; height: 100%; stroke-width: 2.5;
     }
-    .search-bar {
-      flex: 1;
-      text-align: center;
-    }
+    .search-bar { flex: 1; text-align: center; }
     .search-bar input {
-      padding: 8px 15px;
-      width: 70%;
-      max-width: 300px;
-      border-radius: 20px;
-      border: none;
-      font-size: 14px;
-      outline: none;
+      padding: 8px 15px; width: 70%; max-width: 300px;
+      border-radius: 20px; border: none; font-size: 14px; outline: none;
     }
     nav.side-menu {
-      position: fixed;
-      top: 0;
-      left: -230px;
-      width: 200px;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.95);
-      padding: 60px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      transition: left 0.3s;
+      position: fixed; top: 0; left: -230px; width: 200px; height: 100%;
+      background-color: rgba(0, 0, 0, 0.95); padding: 60px 20px;
+      display: flex; flex-direction: column; gap: 15px;
       z-index: 1000;
     }
-    nav.side-menu.open {
-      left: 0;
-    }
+    nav.side-menu.open { left: 0; }
     nav.side-menu a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 16px;
+      color: #ccc; text-decoration: none; font-size: 16px;
     }
-    nav.side-menu a:hover {
-      color: #40e0d0;
-    }
+    nav.side-menu a:hover { color: #40e0d0; }
     h1 {
-      text-align: center;
-      color: #40e0d0;
-      margin: 20px 0;
-      font-size: 34px;
+      text-align: center; color: #40e0d0; margin: 20px 0; font-size: 34px;
       text-shadow: 0 0 12px #40e0d0, 0 0 24px #1db954;
     }
     .genre-menu {
-      display: flex;
-      overflow-x: auto;
-      white-space: nowrap;
-      gap: 10px;
-      padding: 10px;
-      background-color: rgba(0,0,0,0.3);
+      display: flex; overflow-x: auto; white-space: nowrap;
+      gap: 10px; padding: 10px; background-color: rgba(0,0,0,0.3);
       box-shadow: inset 0 0 14px rgba(64,224,208,0.3);
     }
     .genre-button {
-      padding: 8px 16px;
-      background: transparent;
-      color: #40e0d0;
-      border: 1px solid #40e0d0;
-      border-radius: 20px;
-      box-shadow: 0 0 10px #40e0d0;
-      transition: background 0.3s, box-shadow 0.3s;
-      white-space: nowrap;
+      padding: 8px 16px; background: transparent; color: #40e0d0;
+      border: 1px solid #40e0d0; border-radius: 20px;
+      box-shadow: 0 0 10px #40e0d0; cursor: pointer;
     }
     .genre-button:hover {
       background: rgba(64,224,208,0.1);
       box-shadow: 0 0 14px #40e0d0;
     }
-    .track-list {
-      padding: 20px;
-    }
+    .track-list { padding: 20px; }
     .track {
-      background-color: rgba(0,0,0,0.4);
-      border: 1px solid rgba(64,224,208,0.2);
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background-color: rgba(0,0,0,0.4); border-radius: 10px;
+      padding: 12px; margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center;
       box-shadow: 0 0 12px rgba(64,224,208,0.2);
     }
-    .track-title {
-      font-size: 15px;
-    }
+    .track-title { font-size: 15px; }
     .track button {
-      background: transparent;
-      border: none;
-      color: #40e0d0;
-      font-size: 22px;
-      transition: color 0.3s;
-      cursor: pointer;
+      background: transparent; border: none; color: #40e0d0;
+      font-size: 22px; cursor: pointer;
     }
-    .track button:hover {
-      color: #1db954;
-    }
+    .track button:hover { color: #1db954; }
     #player-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
-      box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+      display: none; align-items: center; justify-content: space-between;
+      padding: 10px 20px; box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
       z-index: 1001;
     }
-    #player-info {
-      display: flex;
-      align-items: center;
-    }
+    #player-info { display: flex; align-items: center; }
     #player-info img {
-      height: 50px;
-      border-radius: 5px;
-      margin-right: 10px;
+      height: 50px; border-radius: 5px; margin-right: 10px;
       box-shadow: 0 0 10px rgba(64,224,208,0.4);
     }
-    #player-controls {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
+    #player-controls { display: flex; align-items: center; gap: 20px; }
     #player-controls button {
-      background: none;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      transition: color 0.3s;
+      background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;
     }
-    #player-controls button:hover {
-      color: #40e0d0;
-    }
-    #player-controls svg {
-      width: 28px;
-      height: 28px;
-      stroke: currentColor;
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      filter: drop-shadow(0 0 4px rgba(64,224,208,0.7));
-    }
+    #player-controls button:hover { color: #40e0d0; }
   </style>
 </head>
 <body onclick="closeMenu(event)">
@@ -195,22 +103,17 @@
     <div class="menu-icon" onclick="toggleMenu()">
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </div>
-    <div class="search-bar">
-      <input type="text" placeholder="Поиск..." />
-    </div>
-    <div class="profile-icon">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg>
-    </div>
+    <div class="search-bar"><input type="text" placeholder="Поиск..." /></div>
+    <div class="profile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg></div>
   </header>
 
   <nav class="side-menu" id="side-menu">
     <a href="#" onclick="goHome()">🏠 Главная</a>
-    <a href="#">📚 Библиотека</a>
     <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
     <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
     <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
     <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
-    <a href="#" onclick="showGenre('road')">🛣️</a>
+    <a href="#" onclick="showGenre('road')">🛣️ Дорога</a>
   </nav>
 
   <h1>Music Up</h1>
@@ -220,62 +123,35 @@
     <div class="genre-button" onclick="showGenre('rap')">🎤 Рэп</div>
     <div class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</div>
     <div class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</div>
-    <div class="genre-button" onclick="showGenre('road')">🛣️</div>
+    <div class="genre-button" onclick="showGenre('road')">🛣️ Дорога</div>
   </div>
 
-  <div class="track-list" id="new-releases">
-    <div class="track">
-      <span class="track-title">Мот — День и ночь</span>
-      <button onclick="playTrack('https://media.vocaroo.com/mp3/16ker4KT1gn3', 'Мот — День и ночь', 'https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg')">▶️</button>
-    </div>
-  </div>
-
+  <div class="track-list" id="new-releases"></div>
   <div class="track-list" id="genre-tracks"></div>
 
-  <div id="player-bar" style="display:none;">
+  <div id="player-bar">
     <div id="player-info">
       <img id="track-img" src="" alt="Обложка">
       <div id="track-name">Трек</div>
     </div>
     <div id="player-controls">
-      <button onclick="togglePlayPause()" aria-label="Play/Pause">
-        <svg id="play-icon" viewBox="0 0 24 24">
-          <polygon points="5 3 19 12 5 21 5 3"/>
-        </svg>
-      </button>
+      <button onclick="togglePlayPause()">⏯️</button>
     </div>
   </div>
 
-  <audio id="player" hidden></audio>
+  <audio id="player"></audio>
   <script>
-    const player = document.getElementById("player");
-    const playerBar = document.getElementById("player-bar");
-    const trackName = document.getElementById("track-name");
-    const trackImg = document.getElementById("track-img");
-    const playIcon = document.getElementById("play-icon");
-    const sideMenu = document.getElementById("side-menu");
+    const player = document.getElementById("player"),
+          playerBar = document.getElementById("player-bar"),
+          trackName = document.getElementById("track-name"),
+          trackImg = document.getElementById("track-img"),
+          sideMenu = document.getElementById("side-menu");
 
     const playlist = [
-      {
-        title: "Мот — День и ночь",
-        url: "https://media.vocaroo.com/mp3/16ker4KT1gn3",
-        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg"
-      },
-      {
-        title: "Macan — L",
-        url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM",
-        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg"
-      },
-      {
-        title: "Macan — Заново",
-        url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u",
-        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg"
-      },
-      {
-        title: "Macan — Останься образом",
-        url: "https://voca.ro/1EmoFWHzaRO6",
-        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg"
-      }
+      { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" },
+      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" },
+      { title: "Macan — Останься образом", url: "https://voca.ro/1EmoFWHzaRO6", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" }
     ];
 
     let currentTrackIndex = 0;
@@ -286,24 +162,12 @@
       playerBar.style.display = "flex";
       trackName.textContent = name;
       trackImg.src = img;
-      updatePlayPauseIcon(true);
       currentTrackIndex = playlist.findIndex(t => t.url === url);
     }
 
     function togglePlayPause() {
-      if (player.paused) {
-        player.play();
-        updatePlayPauseIcon(true);
-      } else {
-        player.pause();
-        updatePlayPauseIcon(false);
-      }
-    }
-
-    function updatePlayPauseIcon(isPlaying) {
-      playIcon.innerHTML = isPlaying
-        ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
-        : '<polygon points="5 3 19 12 5 21 5 3"/>';
+      if (player.paused) player.play();
+      else player.pause();
     }
 
     function toggleMenu() {
@@ -344,9 +208,33 @@
 
     player.addEventListener('ended', () => {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      const nextTrack = playlist[currentTrackIndex];
-      playTrack(nextTrack.url, nextTrack.title, nextTrack.img);
+      const next = playlist[currentTrackIndex];
+      playTrack(next.url, next.title, next.img);
     });
+
+    // свайп на плеере
+    let touchStartX = 0;
+    playerBar.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
+    playerBar.addEventListener("touchend", e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (dx < -50) nextTrack();
+      else if (dx > 50) prevTrack();
+    });
+
+    function nextTrack() {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      const t = playlist[currentTrackIndex];
+      playTrack(t.url, t.title, t.img);
+    }
+
+    function prevTrack() {
+      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+      const t = playlist[currentTrackIndex];
+      playTrack(t.url, t.title, t.img);
+    }
+
+    // Заполнить главную при запуске
+    showGenre('hiphop');
   </script>
 </body>
 </html>
