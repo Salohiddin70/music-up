@@ -2,313 +2,222 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Music Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Up</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #fff;
-      padding-bottom: 120px;
-      min-height: 100vh;
-      transition: background 0.6s ease;
+      padding-bottom: 140px;
+      overflow-x: hidden;
     }
-
     header {
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      background: rgba(0,0,0,0.6);
       padding: 10px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .menu-icon, .profile-icon {
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      stroke: #40e0d0;
-      background: rgba(0,0,0,0.4);
-      border-radius: 50%;
-      padding: 6px;
-      box-shadow: 0 0 12px #40e0d0;
-    }
-
-    .menu-icon svg, .profile-icon svg {
-      width: 100%;
-      height: 100%;
-      stroke-width: 2.5;
-    }
-
-    .search-bar { flex: 1; text-align: center; }
-
-    .search-bar input {
-      padding: 8px 15px;
-      width: 70%;
-      max-width: 300px;
-      border-radius: 20px;
-      border: none;
-      font-size: 14px;
-      outline: none;
-    }
-
-    nav.side-menu {
-      position: fixed;
-      top: 0;
-      left: -230px;
-      width: 200px;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.95);
-      padding: 60px 20px;
       display: flex;
-      flex-direction: column;
-      gap: 15px;
-      z-index: 1000;
-      transition: left 0.3s;
+      justify-content: space-between;
+      align-items: center;
     }
-
-    nav.side-menu.open { left: 0; }
-
-    nav.side-menu a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 16px;
-    }
-
-    nav.side-menu a:hover { color: #40e0d0; }
-
     h1 {
       text-align: center;
-      color: #40e0d0;
+      font-size: 32px;
       margin: 20px 0;
-      font-size: 34px;
-      text-shadow: 0 0 12px #40e0d0, 0 0 24px #1db954;
-    }
-
-    .genre-menu {
-      display: flex;
-      overflow-x: auto;
-      white-space: nowrap;
-      gap: 10px;
-      padding: 10px;
-      background-color: rgba(0,0,0,0.3);
-      box-shadow: inset 0 0 14px rgba(64,224,208,0.3);
-    }
-
-    .genre-button {
-      padding: 8px 16px;
-      background: transparent;
       color: #40e0d0;
-      border: 1px solid #40e0d0;
-      border-radius: 20px;
-      box-shadow: 0 0 10px #40e0d0;
-      cursor: pointer;
+      text-shadow: 0 0 12px #40e0d0;
     }
-
     .track-list {
       padding: 20px;
     }
-
     .track {
-      background-color: rgba(0,0,0,0.4);
+      background: rgba(255,255,255,0.05);
       border-radius: 10px;
       padding: 12px;
-      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 0 12px rgba(64,224,208,0.2);
+      margin-bottom: 10px;
+      box-shadow: 0 0 10px rgba(64,224,208,0.3);
     }
-
-    .track-title { font-size: 15px; }
-
+    .track-title {
+      font-size: 16px;
+    }
     .track button {
-      background: transparent;
+      background: none;
       border: none;
       font-size: 24px;
+      color: #40e0d0;
       cursor: pointer;
-      color: #1db954;
     }
-
     #player-bar {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(255,255,255,0.07);
-      backdrop-filter: blur(20px);
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 40px);
+      max-width: 400px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 10px 15px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 20px;
-      box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
-      z-index: 1001;
-      transition: transform 0.4s ease, background 0.5s ease;
+      box-shadow: 0 0 14px rgba(64,224,208,0.4);
+      transition: transform 0.4s ease;
     }
-
     #player-info {
       display: flex;
       align-items: center;
       gap: 10px;
+      flex: 1;
     }
-
-    #track-img {
+    #player-info img {
+      width: 48px;
       height: 48px;
+      object-fit: cover;
       border-radius: 8px;
-      box-shadow: 0 0 8px rgba(64,224,208,0.5);
+      box-shadow: 0 0 8px rgba(255,255,255,0.3);
     }
-
+    #player-info span {
+      font-size: 14px;
+      font-weight: 500;
+    }
     #player-controls {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
     }
-
     #player-controls button {
       background: none;
       border: none;
-      font-size: 28px;
       color: #fff;
+      font-size: 22px;
       cursor: pointer;
       transition: transform 0.2s;
     }
-
-    #player-controls button:active {
-      transform: scale(1.1);
+    #player-bar.swiping {
+      transform: translateX(-50%) scale(0.97);
+      opacity: 0.9;
     }
   </style>
 </head>
-<body onclick="closeMenu(event)">
-  <header>
-    <div class="menu-icon" onclick="toggleMenu()">
-      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </div>
-    <div class="search-bar"><input type="text" placeholder="Поиск..." /></div>
-    <div class="profile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg></div>
-  </header>
+<body>
 
-  <nav class="side-menu" id="side-menu">
-    <a href="#" onclick="goHome()">🏠 Главная</a>
-    <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
-    <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
-    <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
-    <a href="#" onclick="showGenre('road')">🛣️ Дорога</a>
-  </nav>
+  <header>
+    <div>☰</div>
+    <input type="text" placeholder="Поиск..." style="padding: 6px 12px; border-radius: 20px; border: none; width: 70%;">
+    <div>👤</div>
+  </header>
 
   <h1>Music Up</h1>
 
-  <div class="genre-menu">
-    <div class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</div>
-    <div class="genre-button" onclick="showGenre('rap')">🎤 Рэп</div>
-    <div class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</div>
-    <div class="genre-button" onclick="showGenre('road')">🛣️ Дорога</div>
-  </div>
+  <div class="track-list" id="track-list"></div>
 
-  <div class="track-list" id="genre-tracks"></div>
-
-  <div id="player-bar" style="transform: translateY(100%)">
+  <div id="player-bar" style="display: none;">
     <div id="player-info">
-      <img id="track-img" src="" alt="Обложка">
-      <div id="track-name">Трек</div>
+      <img id="track-img" src="" />
+      <span id="track-title">Трек</span>
     </div>
     <div id="player-controls">
       <button onclick="prevTrack()">⏮️</button>
-      <button onclick="togglePlayPause()" id="play-pause-btn">⏯️</button>
+      <button onclick="togglePlayPause()">⏯️</button>
       <button onclick="nextTrack()">⏭️</button>
     </div>
   </div>
 
-  <audio id="player"></audio>
+  <audio id="audio" preload="metadata"></audio>
 
   <script>
-    const player = document.getElementById("player"),
-          playerBar = document.getElementById("player-bar"),
-          trackName = document.getElementById("track-name"),
-          trackImg = document.getElementById("track-img"),
-          playBtn = document.getElementById("play-pause-btn");
-
     const playlist = [
-      { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" },
-      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" },
-      { title: "Macan — Останься образом", url: "https://voca.ro/1EmoFWHzaRO6", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" }
+      {
+        title: "Мот — День и ночь",
+        url: "https://media.vocaroo.com/mp3/16ker4KT1gn3",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg"
+      },
+      {
+        title: "Macan — L",
+        url: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/Macan-L.mp3",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg"
+      },
+      {
+        title: "Macan — Заново",
+        url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg"
+      },
+      {
+        title: "Macan — Останься образом",
+        url: "https://voca.ro/1EmoFWHzaRO6",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg"
+      }
     ];
 
-    let currentTrackIndex = 0;
+    const trackList = document.getElementById("track-list");
+    const audio = document.getElementById("audio");
+    const playerBar = document.getElementById("player-bar");
+    const trackImg = document.getElementById("track-img");
+    const trackTitle = document.getElementById("track-title");
 
-    function playTrack(url, title, img) {
-      player.src = url;
-      player.play();
-      trackName.textContent = title;
-      trackImg.src = img;
-      playerBar.style.transform = "translateY(0)";
-    }
+    let currentTrack = 0;
 
-    function togglePlayPause() {
-      if (player.paused) {
-        player.play();
-        playBtn.textContent = "⏸️";
-      } else {
-        player.pause();
-        playBtn.textContent = "▶️";
-      }
-    }
-
-    function prevTrack() {
-      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-      const track = playlist[currentTrackIndex];
-      playTrack(track.url, track.title, track.img);
-    }
-
-    function nextTrack() {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      const track = playlist[currentTrackIndex];
-      playTrack(track.url, track.title, track.img);
-    }
-
-    player.addEventListener('ended', nextTrack);
-
-    function showGenre(genre) {
-      const genreTracks = {
-        hiphop: [playlist[0]],
-        rap: [playlist[1]],
-        lofi: [playlist[2]],
-        road: playlist
-      };
-      const container = document.getElementById("genre-tracks");
-      container.innerHTML = '';
-      genreTracks[genre].forEach(track => {
+    function renderTracks() {
+      playlist.forEach((track, i) => {
         const div = document.createElement("div");
         div.className = "track";
         div.innerHTML = `<span class="track-title">${track.title}</span>
-          <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}')">▶️</button>`;
-        container.appendChild(div);
+                         <button onclick="playTrack(${i})">▶️</button>`;
+        trackList.appendChild(div);
       });
     }
 
-    function toggleMenu() {
-      document.getElementById("side-menu").classList.toggle("open");
+    function playTrack(i) {
+      currentTrack = i;
+      const track = playlist[i];
+      audio.src = track.url;
+      audio.play();
+      playerBar.style.display = "flex";
+      trackImg.src = track.img;
+      trackTitle.textContent = track.title;
     }
 
-    function closeMenu(e) {
-      if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
-        document.getElementById("side-menu").classList.remove("open");
-      }
+    function togglePlayPause() {
+      if (audio.paused) audio.play();
+      else audio.pause();
     }
 
-    showGenre("hiphop");
+    function nextTrack() {
+      currentTrack = (currentTrack + 1) % playlist.length;
+      playTrack(currentTrack);
+    }
 
-    // Свайп
-    let startX = 0;
-    playerBar.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-    playerBar.addEventListener("touchend", e => {
-      const dx = e.changedTouches[0].clientX - startX;
-      if (dx > 50) prevTrack();
-      if (dx < -50) nextTrack();
+    function prevTrack() {
+      currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+      playTrack(currentTrack);
+    }
+
+    // Swipe animation
+    let touchStartX = 0;
+    playerBar.addEventListener("touchstart", e => {
+      touchStartX = e.touches[0].clientX;
     });
+
+    playerBar.addEventListener("touchend", e => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diffX = touchEndX - touchStartX;
+
+      if (Math.abs(diffX) > 50) {
+        playerBar.classList.add("swiping");
+        setTimeout(() => playerBar.classList.remove("swiping"), 300);
+        if (diffX > 0) {
+          prevTrack();
+        } else {
+          nextTrack();
+        }
+      }
+    });
+
+    renderTracks();
   </script>
 </body>
 </html>
