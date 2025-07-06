@@ -6,7 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', sans-serif; background-color: #000; color: #fff; overflow-x: hidden; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
 
     header {
       background-color: #111;
@@ -16,10 +21,11 @@
       justify-content: space-between;
     }
 
-    .menu-icon, .profile-icon {
-      font-size: 24px;
+    .icon svg {
+      width: 26px;
+      height: 26px;
+      fill: #40e0d0;
       cursor: pointer;
-      color: #40e0d0;
     }
 
     .search-bar {
@@ -39,18 +45,16 @@
 
     nav {
       display: flex;
-      flex-direction: row;
-      justify-content: center;
-      gap: 30px;
-      background-color: #111;
-      padding: 10px;
       flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      background-color: #111;
+      padding: 10px 0;
     }
 
     nav a {
       color: #ccc;
       text-decoration: none;
-      padding: 8px 0;
       font-size: 16px;
     }
 
@@ -60,7 +64,7 @@
       text-align: center;
       color: #40e0d0;
       margin: 20px 0;
-      font-size: 28px;
+      font-size: 32px;
     }
 
     .genres-section {
@@ -68,9 +72,18 @@
     }
 
     .genre-title {
-      color: #40e0d0;
-      font-size: 22px;
-      margin: 20px 10px 10px;
+      font-size: 26px;
+      text-align: center;
+      margin: 40px 0 20px;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #40e0d0, #1db954);
+      border-radius: 30px;
+      color: #fff;
+      display: inline-block;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 10px #1db95488;
     }
 
     .playlist {
@@ -132,19 +145,25 @@
 <body>
 
   <header>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div class="icon" onclick="toggleMenu()">
+      <!-- Гамбургер -->
+      <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>
+    </div>
     <div class="search-bar">
       <input type="text" placeholder="Поиск..." oninput="searchSongs(this.value)" />
     </div>
-    <div class="profile-icon">👤</div>
+    <div class="icon">
+      <!-- Профиль -->
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
+    </div>
   </header>
 
   <nav id="menu">
-    <a href="#pop">Поп</a>
-    <a href="#rock">Рок</a>
-    <a href="#hiphop">Хип-хоп</a>
-    <a href="#lofi">Lo-fi</a>
-    <a href="#jazz">Джаз</a>
+    <a href="#pop">🎤 Поп</a>
+    <a href="#rock">🎸 Рок</a>
+    <a href="#hiphop">🎧 Хип-хоп</a>
+    <a href="#lofi">🌙 Lo-fi</a>
+    <a href="#jazz">🎷 Джаз</a>
   </nav>
 
   <h1>Music Up</h1>
@@ -152,7 +171,7 @@
   <div class="genres-section">
 
     <!-- Поп -->
-    <div id="pop" class="genre-title">Поп</div>
+    <div id="pop" class="genre-title">🎤 Поп</div>
     <div class="playlist">
       <div class="card">
         <img src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=400&q=80" alt="Поп">
@@ -163,7 +182,7 @@
     </div>
 
     <!-- Рок -->
-    <div id="rock" class="genre-title">Рок</div>
+    <div id="rock" class="genre-title">🎸 Рок</div>
     <div class="playlist">
       <div class="card">
         <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" alt="Рок">
@@ -174,7 +193,7 @@
     </div>
 
     <!-- Хип-хоп -->
-    <div id="hiphop" class="genre-title">Хип-хоп / Рэп</div>
+    <div id="hiphop" class="genre-title">🎧 Хип-хоп / Рэп</div>
     <div class="playlist">
       <div class="card">
         <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1968.jpeg" alt="Хип-хоп">
@@ -185,7 +204,7 @@
     </div>
 
     <!-- Lo-fi -->
-    <div id="lofi" class="genre-title">Lo-fi</div>
+    <div id="lofi" class="genre-title">🌙 Lo-fi</div>
     <div class="playlist">
       <div class="card">
         <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80" alt="Lo-fi">
@@ -196,7 +215,7 @@
     </div>
 
     <!-- Джаз -->
-    <div id="jazz" class="genre-title">Джаз</div>
+    <div id="jazz" class="genre-title">🎷 Джаз</div>
     <div class="playlist">
       <div class="card">
         <img src="https://images.unsplash.com/photo-1525286116112-b59af11adad1?auto=format&fit=crop&w=400&q=80" alt="Джаз">
