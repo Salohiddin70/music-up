@@ -13,10 +13,28 @@
       padding-bottom: 120px;
       min-height: 100vh;
     }
+
+    /* Слайд анимация */
+    .slide-left {
+      animation: slideLeft 0.3s ease forwards;
+    }
+    .slide-right {
+      animation: slideRight 0.3s ease forwards;
+    }
+    @keyframes slideLeft {
+      0% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(-100%); opacity: 0; }
+    }
+    @keyframes slideRight {
+      0% { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+
     header, .menu-icon, .profile-icon, .search-bar input, nav.side-menu, h1,
     .genre-menu, .genre-button, .track, #player-bar, #player-controls button, #player-controls svg {
       transition: all 0.3s ease;
     }
+
     header {
       background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: space-between;
       padding: 10px 20px; position: sticky; top: 0; z-index: 100;
@@ -37,6 +55,7 @@
       padding: 8px 15px; width: 70%; max-width: 300px;
       border-radius: 20px; border: none; font-size: 14px; outline: none;
     }
+
     nav.side-menu {
       position: fixed; top: 0; left: -230px; width: 200px; height: 100%;
       background-color: rgba(0, 0, 0, 0.95); padding: 60px 20px;
@@ -48,15 +67,18 @@
       color: #ccc; text-decoration: none; font-size: 16px;
     }
     nav.side-menu a:hover { color: #40e0d0; }
+
     h1 {
       text-align: center; color: #40e0d0; margin: 20px 0; font-size: 34px;
       text-shadow: 0 0 12px #40e0d0, 0 0 24px #1db954;
     }
+
     .genre-menu {
       display: flex; overflow-x: auto; white-space: nowrap;
       gap: 10px; padding: 10px; background-color: rgba(0,0,0,0.3);
       box-shadow: inset 0 0 14px rgba(64,224,208,0.3);
     }
+
     .genre-button {
       padding: 8px 16px; background: transparent; color: #40e0d0;
       border: 1px solid #40e0d0; border-radius: 20px;
@@ -66,6 +88,7 @@
       background: rgba(64,224,208,0.1);
       box-shadow: 0 0 14px #40e0d0;
     }
+
     .track-list { padding: 20px; }
     .track {
       background-color: rgba(0,0,0,0.4); border-radius: 10px;
@@ -73,24 +96,35 @@
       display: flex; justify-content: space-between; align-items: center;
       box-shadow: 0 0 12px rgba(64,224,208,0.2);
     }
+
     .track-title { font-size: 15px; }
     .track button {
       background: transparent; border: none; color: #40e0d0;
       font-size: 22px; cursor: pointer;
     }
     .track button:hover { color: #1db954; }
+
     #player-bar {
       position: fixed; bottom: 0; left: 0; width: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
-      display: none; align-items: center; justify-content: space-between;
+      display: none; align-items: center; justify-content: center;
       padding: 10px 20px; box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
       z-index: 1001;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
     }
-    #player-info { display: flex; align-items: center; }
+
+    #player-slide {
+      display: flex; align-items: center; gap: 20px;
+      width: 100%; max-width: 600px;
+    }
+
+    #player-info { display: flex; align-items: center; flex: 1; }
     #player-info img {
       height: 50px; border-radius: 5px; margin-right: 10px;
       box-shadow: 0 0 10px rgba(64,224,208,0.4);
     }
+
     #player-controls { display: flex; align-items: center; gap: 20px; }
     #player-controls button {
       background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;
@@ -130,12 +164,14 @@
   <div class="track-list" id="genre-tracks"></div>
 
   <div id="player-bar">
-    <div id="player-info">
-      <img id="track-img" src="" alt="Обложка">
-      <div id="track-name">Трек</div>
-    </div>
-    <div id="player-controls">
-      <button onclick="togglePlayPause()">⏯️</button>
+    <div id="player-slide">
+      <div id="player-info">
+        <img id="track-img" src="" alt="Обложка">
+        <div id="track-name">Трек</div>
+      </div>
+      <div id="player-controls">
+        <button onclick="togglePlayPause()">⏯️</button>
+      </div>
     </div>
   </div>
 
@@ -145,6 +181,7 @@
           playerBar = document.getElementById("player-bar"),
           trackName = document.getElementById("track-name"),
           trackImg = document.getElementById("track-img"),
+          playerSlide = document.getElementById("player-slide"),
           sideMenu = document.getElementById("side-menu");
 
     const playlist = [
@@ -157,12 +194,11 @@
     let currentTrackIndex = 0;
 
     function playTrack(url, name, img) {
+      trackName.textContent = name;
+      trackImg.src = img;
       player.src = url;
       player.play();
       playerBar.style.display = "flex";
-      trackName.textContent = name;
-      trackImg.src = img;
-      currentTrackIndex = playlist.findIndex(t => t.url === url);
     }
 
     function togglePlayPause() {
@@ -201,40 +237,48 @@
         const div = document.createElement('div');
         div.className = 'track';
         div.innerHTML = `<span class="track-title">${track.title}</span>
-          <button onclick="playTrack('${track.url}','${track.title}','${track.img}')">▶️</button>`;
+          <button onclick="slideToTrack('${track.url}','${track.title}','${track.img}')">▶️</button>`;
         container.appendChild(div);
       });
     }
 
     player.addEventListener('ended', () => {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      const next = playlist[currentTrackIndex];
-      playTrack(next.url, next.title, next.img);
+      nextTrack();
     });
 
-    // свайп на плеере
+    // Свайп
     let touchStartX = 0;
     playerBar.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
     playerBar.addEventListener("touchend", e => {
       const dx = e.changedTouches[0].clientX - touchStartX;
-      if (dx < -50) nextTrack();
-      else if (dx > 50) prevTrack();
+      if (dx < -50) nextTrack(true);
+      else if (dx > 50) prevTrack(true);
     });
 
-    function nextTrack() {
+    function slideToTrack(url, name, img, direction = "left") {
+      const animClass = direction === "left" ? "slide-left" : "slide-right";
+      playerSlide.classList.add(animClass);
+      setTimeout(() => {
+        playerSlide.classList.remove(animClass);
+        playTrack(url, name, img);
+      }, 300);
+    }
+
+    function nextTrack(animated = false) {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       const t = playlist[currentTrackIndex];
-      playTrack(t.url, t.title, t.img);
+      if (animated) slideToTrack(t.url, t.title, t.img, "left");
+      else playTrack(t.url, t.title, t.img);
     }
 
-    function prevTrack() {
+    function prevTrack(animated = false) {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       const t = playlist[currentTrackIndex];
-      playTrack(t.url, t.title, t.img);
+      if (animated) slideToTrack(t.url, t.title, t.img, "right");
+      else playTrack(t.url, t.title, t.img);
     }
 
-    // Заполнить главную при запуске
-    showGenre('hiphop');
+    showGenre("hiphop");
   </script>
 </body>
 </html>
