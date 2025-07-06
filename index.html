@@ -113,7 +113,6 @@
       border-radius: 20px;
       text-decoration: none;
       flex-shrink: 0;
-      cursor: pointer;
     }
 
     .track-list {
@@ -169,32 +168,51 @@
       align-items: center;
     }
 
+    #player-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
     #player-controls button {
       background: none;
       border: none;
       color: white;
-      font-size: 24px;
-      margin: 0 10px;
       cursor: pointer;
-      user-select: none;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: color 0.3s;
     }
 
     #player-controls button:hover {
       color: #1db954;
     }
+
+    #player-controls svg {
+      stroke: currentColor;
+      width: 24px;
+      height: 24px;
+      stroke-width: 2.5;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
   </style>
 </head>
 <body onclick="closeMenu(event)">
   <header>
-    <svg class="menu-icon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M3 6h18M3 12h18M3 18h18"/>
+    <svg class="menu-icon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
     </svg>
     <div class="search-bar">
       <input type="text" placeholder="Поиск..." oninput="searchTracks(this.value)" />
     </div>
-    <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+    <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+      <circle cx="12" cy="7" r="4" />
+      <path d="M5.5 21h13a2 2 0 0 0-13 0z" />
     </svg>
   </header>
 
@@ -231,8 +249,18 @@
       <div id="track-name">Трек</div>
     </div>
     <div id="player-controls">
-      <button id="play-pause-btn" onclick="togglePlayPause()">▶️</button>
-      <button onclick="playNextTrack()">⏭️</button>
+      <button id="play-pause-btn" onclick="togglePlayPause()" aria-label="Play/Pause">
+        <!-- Иконка будет динамически обновляться -->
+        <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+          <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
+      </button>
+      <button id="next-btn" onclick="playNext()" aria-label="Next track">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+          <polygon points="5 4 15 12 5 20 5 4" />
+          <line x1="19" y1="4" x2="19" y2="20" />
+        </svg>
+      </button>
     </div>
   </div>
 
@@ -245,46 +273,58 @@
     const trackImg = document.getElementById("track-img");
     const sideMenu = document.getElementById("side-menu");
 
-    let currentGenre = null;
-    let currentTrackIndex = -1;
+    const playPauseBtn = document.getElementById("play-pause-btn");
+    const playIcon = document.getElementById("play-icon");
 
-    function playTrack(url, name, img, genre = null, index = -1) {
+    // Плейлист для примера
+    const playlist = [
+      { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+      { title: "Macan — Останься образом", url: "https://media.vocaroo.com/mp3/1fNWBhahQ6Mo", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" }
+    ];
+
+    let currentTrackIndex = 0;
+
+    function playTrack(url, name, img) {
       player.src = url;
       player.play();
       playerBar.style.display = "flex";
       trackName.textContent = name;
       trackImg.src = img;
-
-      currentGenre = genre;
-      currentTrackIndex = index;
-
-      updatePlayPauseIcon();
+      updatePlayPauseIcon(true);
+      currentTrackIndex = playlist.findIndex(t => t.url === url);
+      if (currentTrackIndex === -1) currentTrackIndex = 0;
     }
 
     function togglePlayPause() {
       if (player.paused) {
         player.play();
+        updatePlayPauseIcon(true);
       } else {
         player.pause();
+        updatePlayPauseIcon(false);
       }
-      updatePlayPauseIcon();
     }
 
-    function updatePlayPauseIcon() {
-      const btn = document.getElementById("play-pause-btn");
-      btn.textContent = player.paused ? "▶️" : "⏸️";
+    function updatePlayPauseIcon(isPlaying) {
+      if (isPlaying) {
+        // Показать паузу
+        playIcon.innerHTML = `
+          <rect x="6" y="4" width="4" height="16" />
+          <rect x="14" y="4" width="4" height="16" />
+        `;
+      } else {
+        // Показать плей
+        playIcon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3" />`;
+      }
     }
 
-    function playNextTrack() {
-      if (!currentGenre || currentTrackIndex === -1) return;
-      const tracks = genres[currentGenre];
-      if (!tracks || tracks.length === 0) return;
-
-      let nextIndex = currentTrackIndex + 1;
-      if (nextIndex >= tracks.length) nextIndex = 0; // зациклить
-
-      const nextTrack = tracks[nextIndex];
-      playTrack(nextTrack.url, nextTrack.title, nextTrack.img, currentGenre, nextIndex);
+    function playNext() {
+      currentTrackIndex++;
+      if (currentTrackIndex >= playlist.length) currentTrackIndex = 0;
+      const track = playlist[currentTrackIndex];
+      playTrack(track.url, track.title, track.img);
     }
 
     function toggleMenu() {
@@ -298,42 +338,36 @@
     }
 
     function goHome() {
-      currentGenre = null;
-      currentTrackIndex = -1;
       document.getElementById("new-releases").style.display = "block";
       document.getElementById("genre-tracks").innerHTML = "";
     }
 
     function showGenre(genre) {
-      currentGenre = genre;
-      currentTrackIndex = -1;
       document.getElementById("new-releases").style.display = "none";
       const container = document.getElementById("genre-tracks");
       container.innerHTML = "";
       const songs = genres[genre] || [];
-      songs.forEach((track, index) => {
+      songs.forEach(track => {
         const div = document.createElement("div");
         div.className = "track";
         div.innerHTML = `
           <span class="track-title">${track.title}</span>
-          <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}', '${genre}', ${index})">▶️</button>
+          <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}')">▶️</button>
         `;
         container.appendChild(div);
       });
     }
 
-    // Жанры и треки
     const genres = {
-      hiphop: [
-        { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-        { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-        { title: "Macan — Останься образом", url: "https://media.vocaroo.com/mp3/1fNWBhahQ6Mo", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-        { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" }
-      ],
+      hiphop: playlist,
       rap: [],
       jazz: [],
       lofi: []
     };
+
+    // Автоматически переключать трек, когда текущий закончится
+    player.addEventListener('ended', playNext);
+
   </script>
 </body>
 </html>
