@@ -7,44 +7,117 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', sans-serif; background-color: #000; color: #fff; overflow-x: hidden; }
+
     header {
       background-color: #111;
       padding: 10px 20px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .menu-icon, .profile-icon { font-size: 24px; cursor: pointer; color: #40e0d0; }
-    .search-bar { flex: 1; text-align: center; }
+
+    .menu-icon, .profile-icon {
+      font-size: 24px;
+      cursor: pointer;
+      color: #40e0d0;
+    }
+
+    .search-bar {
+      flex: 1;
+      text-align: center;
+    }
+
     .search-bar input {
-      padding: 8px 15px; width: 70%; max-width: 300px;
-      border: none; border-radius: 20px; outline: none; font-size: 14px;
+      padding: 8px 15px;
+      width: 70%;
+      max-width: 300px;
+      border: none;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
     }
-    nav { display: none; flex-direction: column; background-color: #111; padding: 20px; }
+
+    nav {
+      display: none;
+      flex-direction: column;
+      background-color: #111;
+      padding: 20px;
+    }
+
     nav a {
-      color: #ccc; text-decoration: none; padding: 10px 0; font-size: 16px;
+      color: #ccc;
+      text-decoration: none;
+      padding: 10px 0;
+      font-size: 16px;
     }
+
     nav a:hover { color: #40e0d0; }
-    h1 { text-align: center; color: #40e0d0; margin: 20px 0; font-size: 28px; }
-    .genres, .playlist {
-      display: flex; flex-wrap: wrap; justify-content: center;
-      gap: 20px; padding: 10px 20px;
+
+    h1 {
+      text-align: center;
+      color: #40e0d0;
+      margin: 20px 0;
+      font-size: 28px;
     }
+
+    .genres, .playlist {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 10px 20px;
+    }
+
     .card {
       background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 10px; padding: 10px; width: 160px; text-align: center;
+      border-radius: 10px;
+      padding: 10px;
+      width: 160px;
+      text-align: center;
     }
+
     .card img {
-      width: 100%; border-radius: 10px; height: 160px; object-fit: cover;
+      width: 100%;
+      border-radius: 10px;
+      height: 160px;
+      object-fit: cover;
     }
-    .title { margin-top: 8px; font-weight: bold; }
-    .artist { font-size: 14px; color: #aaa; margin: 5px 0; }
+
+    .title {
+      margin-top: 8px;
+      font-weight: bold;
+    }
+
+    .artist {
+      font-size: 14px;
+      color: #aaa;
+      margin: 5px 0;
+    }
+
     .play-btn {
-      background-color: #1db954; border: none; padding: 6px 15px;
-      border-radius: 20px; color: white; font-size: 14px; cursor: pointer;
+      background-color: #1db954;
+      border: none;
+      padding: 6px 15px;
+      border-radius: 20px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
     }
+
     .play-btn:hover { background-color: #1ed760; }
-    audio { width: 100%; margin-top: 20px; }
+
+    audio {
+      width: 100%;
+      margin-top: 20px;
+    }
+
     @media (min-width: 768px) {
-      nav { display: flex !important; flex-direction: row; justify-content: center; gap: 30px; }
+      nav {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
+      }
     }
   </style>
 </head>
@@ -68,6 +141,7 @@
 
   <h1>Music Up</h1>
 
+  <!-- ЖАНРЫ -->
   <div class="genres">
     <div class="card"><img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=400&q=80" alt="Поп"><div class="title">Поп</div></div>
     <div class="card"><img src="https://images.unsplash.com/photo-1511376777868-611b54f68947?auto=format&fit=crop&w=400&q=80" alt="Рок"><div class="title">Рок</div></div>
@@ -75,21 +149,25 @@
     <div class="card"><img src="https://images.unsplash.com/photo-1525286116112-b59af11adad1?auto=format&fit=crop&w=400&q=80" alt="Джаз"><div class="title">Джаз</div></div>
   </div>
 
+  <!-- ПЛЕЙЛИСТ MACAN -->
   <div class="playlist" id="playlist">
-    <!-- Твой Macan с IMG_1963.jpeg -->
+
+    <!-- Май -->
     <div class="card" data-title="Май" data-artist="Macan">
       <img class="cover" src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
       <div class="title">Май</div>
       <div class="artist">Macan</div>
       <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/292d19b1f2b989f1c46d393c204a4eb3/Makan_-_Maj.mp3')">▶️ Играть</button>
     </div>
-    <!-- Обновлённая песня "Заново" с GitHub -->
+
+    <!-- Заново (Vocaroo) -->
     <div class="card" data-title="Заново" data-artist="Macan">
       <img class="cover" src="https://i.imgur.com/0YrLbdn.jpeg" alt="Заново">
       <div class="title">Заново</div>
       <div class="artist">Macan</div>
-      <button class="play-btn" onclick="playSong('https://raw.githubusercontent.com/Salohiddin70/music-up/main/macan-zanovo.mp3')">▶️ Играть</button>
+      <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1Z155EzK1A4u')">▶️ Играть</button>
     </div>
+
     <!-- Останься образом -->
     <div class="card" data-title="Останься образом" data-artist="Macan">
       <img class="cover" src="https://i.imgur.com/kVKMCKr.jpeg" alt="Останься образом">
@@ -110,18 +188,18 @@
       player.play();
     }
 
-    function searchSongs(q) {
-      q = q.toLowerCase();
+    function searchSongs(query) {
+      query = query.toLowerCase();
       document.querySelectorAll('.card').forEach(card => {
-        const t = card.dataset.title?.toLowerCase() || '';
-        const a = card.dataset.artist?.toLowerCase() || '';
-        card.style.display = (t.includes(q) || a.includes(q)) ? 'block' : 'none';
+        const title = card.dataset.title?.toLowerCase() || '';
+        const artist = card.dataset.artist?.toLowerCase() || '';
+        card.style.display = (title.includes(query) || artist.includes(query)) ? 'block' : 'none';
       });
     }
 
     function toggleMenu() {
-      const m = document.getElementById('menu');
-      m.style.display = window.getComputedStyle(m).display === 'flex' ? 'none' : 'flex';
+      const menu = document.getElementById('menu');
+      menu.style.display = window.getComputedStyle(menu).display === 'flex' ? 'none' : 'flex';
     }
   </script>
 
