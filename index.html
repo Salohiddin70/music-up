@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Music Up — Жанры</title>
+  <title>Music Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -49,7 +49,6 @@
       font-size: 28px;
     }
 
-    /* Горизонтальное меню жанров */
     .genre-menu {
       display: flex;
       overflow-x: auto;
@@ -78,17 +77,56 @@
     .genre-button:hover {
       background: linear-gradient(90deg, #1db954, #40e0d0);
     }
+
+    .section-title {
+      font-size: 20px;
+      margin: 20px;
+      text-align: center;
+      color: #1db954;
+    }
+
+    .track-list {
+      padding: 0 20px 40px;
+    }
+
+    .track {
+      margin-bottom: 15px;
+      background-color: #111;
+      padding: 10px 15px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .track-title {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .track button {
+      background-color: #1db954;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .track button:hover {
+      background-color: #1ed760;
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="icon" onclick="toggleMenu()">
+    <div class="icon">
       <!-- Гамбургер -->
       <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>
     </div>
     <div class="search-bar">
-      <input type="text" placeholder="Поиск..." />
+      <input type="text" placeholder="Поиск..." oninput="searchTracks(this.value)" />
     </div>
     <div class="icon">
       <!-- Профиль -->
@@ -98,24 +136,112 @@
 
   <h1>Music Up</h1>
 
-  <!-- Горизонтальное меню жанров -->
+  <!-- Меню жанров -->
   <div class="genre-menu">
-    <a href="#pop" class="genre-button">🎤 Поп</a>
-    <a href="#rock" class="genre-button">🎸 Рок</a>
-    <a href="#hiphop" class="genre-button">🎧 Хип-хоп</a>
-    <a href="#lofi" class="genre-button">🌙 Lo-fi</a>
-    <a href="#jazz" class="genre-button">🎷 Джаз</a>
-    <a href="#macan" class="genre-button">🔥 Macan</a>
-    <a href="#dance" class="genre-button">💃 Танцы</a>
-    <a href="#edm" class="genre-button">🎛 EDM</a>
-    <a href="#chill" class="genre-button">🧘 Chill</a>
-    <!-- добавляй свои жанры -->
+    <a href="#" class="genre-button" onclick="showGenre('pop')">🎤 Поп</a>
+    <a href="#" class="genre-button" onclick="showGenre('rock')">🎸 Рок</a>
+    <a href="#" class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
+    <a href="#" class="genre-button" onclick="showGenre('rap')">🎤 Рэп</a>
+    <a href="#" class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</a>
+    <a href="#" class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</a>
   </div>
 
+  <!-- Новинки -->
+  <div class="section-title">🔥 Новинки</div>
+  <div class="track-list" id="new-releases">
+    <div class="track">
+      <span class="track-title">Мот — День и ночь</span>
+      <button onclick="playTrack('https://voca.ro/16ker4KT1gn3')">▶️</button>
+    </div>
+  </div>
+
+  <!-- Треки по жанрам -->
+  <div class="section-title" id="genre-title"></div>
+  <div class="track-list" id="genre-tracks"></div>
+
+  <audio id="player" controls style="width:100%; margin-top: 20px;"></audio>
+
   <script>
-    function toggleMenu() {
-      // Можешь добавить мобильное меню, если хочешь
-      alert("Меню нажато (сюда можно вставить открытие меню)");
+    const player = document.getElementById('player');
+
+    const genres = {
+      hiphop: [
+        { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM" },
+        { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u" },
+        { title: "Macan — Останься образом", url: "https://media.vocaroo.com/mp3/1fNWBhahQ6Mo" },
+        { title: "Мот — День и ночь", url: "https://voca.ro/16ker4KT1gn3" }
+      ],
+      pop: [],
+      rock: [],
+      rap: [],
+      lofi: [],
+      jazz: []
+    };
+
+    function playTrack(url) {
+      player.src = url;
+      player.play();
+    }
+
+    function showGenre(genre) {
+      const list = genres[genre] || [];
+      const title = document.getElementById("genre-title");
+      const container = document.getElementById("genre-tracks");
+
+      title.textContent = genreNames[genre] || "";
+      container.innerHTML = "";
+
+      if (list.length === 0) {
+        container.innerHTML = "<p style='text-align:center; color: #888;'>Пока нет песен в этом жанре.</p>";
+        return;
+      }
+
+      list.forEach(song => {
+        const div = document.createElement("div");
+        div.className = "track";
+        div.innerHTML = `
+          <span class="track-title">${song.title}</span>
+          <button onclick="playTrack('${song.url}')">▶️</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    const genreNames = {
+      pop: "🎤 Поп",
+      rock: "🎸 Рок",
+      hiphop: "🎧 Хип-хоп",
+      rap: "🎤 Рэп",
+      lofi: "🌙 Lo-fi",
+      jazz: "🎷 Джаз"
+    };
+
+    function searchTracks(query) {
+      const lower = query.toLowerCase();
+      const container = document.getElementById("genre-tracks");
+      const allTracks = Object.values(genres).flat();
+
+      const filtered = allTracks.filter(track =>
+        track.title.toLowerCase().includes(lower)
+      );
+
+      document.getElementById("genre-title").textContent = "🔍 Результаты поиска";
+      container.innerHTML = "";
+
+      if (filtered.length === 0) {
+        container.innerHTML = "<p style='text-align:center; color: #888;'>Ничего не найдено.</p>";
+        return;
+      }
+
+      filtered.forEach(track => {
+        const div = document.createElement("div");
+        div.className = "track";
+        div.innerHTML = `
+          <span class="track-title">${track.title}</span>
+          <button onclick="playTrack('${track.url}')">▶️</button>
+        `;
+        container.appendChild(div);
+      });
     }
   </script>
 
