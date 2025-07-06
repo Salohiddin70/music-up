@@ -1,105 +1,358 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Music Player</title>
-<style>
-  body {
-    margin: 0; padding-bottom: 60px; /* чтобы плеер не перекрывал контент */
-    font-family: Arial, sans-serif;
-  }
-  #player-container {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    height: 60px;
-    background: #222;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-    box-sizing: border-box;
-  }
-  #track-info {
-    flex-grow: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  #play-pause {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 24px;
-    cursor: pointer;
-    margin-left: 15px;
-  }
-  audio {
-    display: none; /* скрываем встроенный плеер */
-  }
-</style>
-</head>
-<body>
-
-<div id="player-container">
-  <div id="track-info">Загрузка...</div>
-  <button id="play-pause">▶️</button>
-</div>
-
-<audio id="player" preload="auto"></audio>
-
-<script>
-  const playlist = [
-    {url: 'track1.mp3', title: 'Трек 1', img: 'img1.jpg'},
-    {url: 'track2.mp3', title: 'Трек 2', img: 'img2.jpg'},
-    {url: 'track3.mp3', title: 'Трек 3', img: 'img3.jpg'}
-  ];
-
-  const player = document.getElementById('player');
-  const playPauseBtn = document.getElementById('play-pause');
-  const trackInfo = document.getElementById('track-info');
-
-  let currentTrackIndex = 0;
-
-  function loadTrack(index) {
-    if(index < 0) index = playlist.length - 1;
-    if(index >= playlist.length) index = 0;
-    currentTrackIndex = index;
-    player.src = playlist[currentTrackIndex].url;
-    trackInfo.textContent = playlist[currentTrackIndex].title;
-  }
-
-  function playTrack(index) {
-    loadTrack(index);
-    player.play();
-    playPauseBtn.textContent = '⏸️';
-  }
-
-  function togglePlayPause() {
-    if (player.paused) {
-      player.play();
-      playPauseBtn.textContent = '⏸️';
-    } else {
-      player.pause();
-      playPauseBtn.textContent = '▶️';
+  <meta charset="UTF-8" />
+  <title>Music Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      padding-bottom: 120px;
+      min-height: 100vh;
     }
-  }
+    header {
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .menu-icon, .profile-icon {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      stroke: #40e0d0;
+      background: rgba(0,0,0,0.4);
+      border-radius: 50%;
+      padding: 6px;
+      box-shadow: 0 0 12px #40e0d0;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .menu-icon:hover, .profile-icon:hover {
+      background: rgba(64,224,208,0.2);
+      box-shadow: 0 0 16px #40e0d0;
+    }
+    .menu-icon svg, .profile-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke-width: 2.5;
+    }
+    .search-bar {
+      flex: 1;
+      text-align: center;
+    }
+    .search-bar input {
+      padding: 8px 15px;
+      width: 70%;
+      max-width: 300px;
+      border-radius: 20px;
+      border: none;
+      font-size: 14px;
+      outline: none;
+    }
+    nav.side-menu {
+      position: fixed;
+      top: 0;
+      left: -230px;
+      width: 200px;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      padding: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      transition: left 0.3s;
+      z-index: 1000;
+    }
+    nav.side-menu.open {
+      left: 0;
+    }
+    nav.side-menu a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    nav.side-menu a:hover {
+      color: #40e0d0;
+    }
+    h1 {
+      text-align: center;
+      color: #40e0d0;
+      margin: 20px 0;
+      font-size: 34px;
+      text-shadow: 0 0 12px #40e0d0, 0 0 24px #1db954;
+    }
+    .genre-menu {
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      gap: 10px;
+      padding: 10px;
+      background-color: rgba(0,0,0,0.3);
+      box-shadow: inset 0 0 14px rgba(64,224,208,0.3);
+    }
+    .genre-button {
+      padding: 8px 16px;
+      background: transparent;
+      color: #40e0d0;
+      border: 1px solid #40e0d0;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #40e0d0;
+      transition: background 0.3s, box-shadow 0.3s;
+      white-space: nowrap;
+    }
+    .genre-button:hover {
+      background: rgba(64,224,208,0.1);
+      box-shadow: 0 0 14px #40e0d0;
+    }
+    .track-list {
+      padding: 20px;
+    }
+    .track {
+      background-color: rgba(0,0,0,0.4);
+      border: 1px solid rgba(64,224,208,0.2);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 12px rgba(64,224,208,0.2);
+    }
+    .track-title {
+      font-size: 15px;
+    }
+    .track button {
+      background: transparent;
+      border: none;
+      color: #40e0d0;
+      font-size: 22px;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    .track button:hover {
+      color: #1db954;
+    }
+    /* Плеер внизу */
+    #player-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
+      z-index: 1001;
+    }
+    #player-info {
+      display: flex;
+      align-items: center;
+    }
+    #player-info img {
+      height: 50px;
+      border-radius: 5px;
+      margin-right: 10px;
+      box-shadow: 0 0 10px rgba(64,224,208,0.4);
+    }
+    #player-controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    #player-controls button {
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    #player-controls button:hover {
+      color: #40e0d0;
+    }
+    #player-controls svg {
+      width: 28px;
+      height: 28px;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 4px rgba(64,224,208,0.7));
+    }
 
-  function playNext() {
-    playTrack(currentTrackIndex + 1);
-  }
+    /* Скрываем кнопку next */
+    #next-button {
+      display: none;
+    }
+  </style>
+</head>
+<body onclick="closeMenu(event)">
+  <header>
+    <div class="menu-icon" onclick="toggleMenu()">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Поиск..." />
+    </div>
+    <div class="profile-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg>
+    </div>
+  </header>
 
-  function playPrev() {
-    playTrack(currentTrackIndex - 1);
-  }
+  <nav class="side-menu" id="side-menu">
+    <a href="#" onclick="goHome()">🏠 Главная</a>
+    <a href="#">📚 Библиотека</a>
+    <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
+    <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
+    <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
+    <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
+  </nav>
 
-  playPauseBtn.addEventListener('click', togglePlayPause);
+  <h1>Music Up</h1>
 
-  player.addEventListener('ended', playNext);
+  <div class="genre-menu">
+    <div class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</div>
+    <div class="genre-button" onclick="showGenre('rap')">🎤 Рэп</div>
+    <div class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</div>
+    <div class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</div>
+  </div>
 
-  // Инициализация первого трека
-  loadTrack(currentTrackIndex);
-</script>
+  <div class="track-list" id="new-releases">
+    <div class="track">
+      <span class="track-title">Мот — День и ночь</span>
+      <button onclick="playTrack('https://media.vocaroo.com/mp3/16ker4KT1gn3', 'Мот — День и ночь', 'https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg')">▶️</button>
+    </div>
+  </div>
+  <div class="track-list" id="genre-tracks"></div>
 
+  <div id="player-bar" style="display:none;">
+    <div id="player-info">
+      <img id="track-img" src="" alt="Обложка" />
+      <div id="track-name">Трек</div>
+    </div>
+    <div id="player-controls">
+      <button onclick="togglePlayPause()" aria-label="Play/Pause">
+        <svg id="play-icon" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
+      </button>
+      <!-- Кнопка "Next" скрыта -->
+      <button id="next-button" onclick="playNext()" aria-label="Next">
+        <svg viewBox="0 0 24 24">
+          <polygon points="5 4 15 12 5 20 5 4" />
+          <line x1="19" y1="4" x2="19" y2="20" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <audio id="player" hidden></audio>
+  <script>
+    const player = document.getElementById("player");
+    const playerBar = document.getElementById("player-bar");
+    const trackName = document.getElementById("track-name");
+    const trackImg = document.getElementById("track-img");
+    const playIcon = document.getElementById("play-icon");
+    const sideMenu = document.getElementById("side-menu");
+
+    const playlist = [
+      {
+        title: "Мот — День и ночь",
+        url: "https://media.vocaroo.com/mp3/16ker4KT1gn3",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg",
+      },
+      {
+        title: "Macan — L",
+        url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg",
+      },
+      {
+        title: "Macan — Заново",
+        url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg",
+      },
+    ];
+    let currentTrackIndex = 0;
+
+    function playTrack(url, name, img) {
+      player.src = url;
+      player.play();
+      playerBar.style.display = "flex";
+      trackName.textContent = name;
+      trackImg.src = img;
+      updatePlayPauseIcon(true);
+      currentTrackIndex = playlist.findIndex((t) => t.url === url);
+    }
+
+    function togglePlayPause() {
+      if (player.paused) {
+        player.play();
+        updatePlayPauseIcon(true);
+      } else {
+        player.pause();
+        updatePlayPauseIcon(false);
+      }
+    }
+
+    function updatePlayPauseIcon(isPlaying) {
+      playIcon.innerHTML = isPlaying
+        ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
+        : '<polygon points="5 3 19 12 5 21 5 3"/>';
+    }
+
+    function playNext() {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      const track = playlist[currentTrackIndex];
+      playTrack(track.url, track.title, track.img);
+    }
+
+    function toggleMenu() {
+      sideMenu.classList.toggle("open");
+    }
+
+    function closeMenu(e) {
+      if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
+        sideMenu.classList.remove("open");
+      }
+    }
+
+    function goHome() {
+      document.getElementById("new-releases").style.display = "block";
+      document.getElementById("genre-tracks").innerHTML = "";
+    }
+
+    const genres = {
+      hiphop: [playlist[0]],
+      rap: [playlist[1]],
+      jazz: [],
+      lofi: [playlist[2]],
+    };
+
+    function showGenre(genre) {
+      document.getElementById("new-releases").style.display = "none";
+      const container = document.getElementById("genre-tracks");
+      container.innerHTML = "";
+      genres[genre].forEach((track) => {
+        const div = document.createElement("div");
+        div.className = "track";
+        div.innerHTML = `<span class="track-title">${track.title}</span>
+          <button onclick="playTrack('${track.url}','${track.title}','${track.img}')">▶️</button>`;
+        container.appendChild(div);
+      });
+    }
+
+    // Автоматически играть следующий трек по окончании
+    player.addEventListener("ended", playNext);
+  </script>
 </body>
 </html>
