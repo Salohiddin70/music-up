@@ -139,7 +139,6 @@
     .track button:hover {
       color: #1db954;
     }
-    /* Плеер внизу */
     #player-bar {
       position: fixed;
       bottom: 0;
@@ -189,11 +188,6 @@
       stroke-linejoin: round;
       filter: drop-shadow(0 0 4px rgba(64,224,208,0.7));
     }
-
-    /* Скрываем кнопку next */
-    #next-button {
-      display: none;
-    }
   </style>
 </head>
 <body onclick="closeMenu(event)">
@@ -216,6 +210,7 @@
     <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
     <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
     <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
+    <a href="#" onclick="showGenre('road')">🛣️</a>
   </nav>
 
   <h1>Music Up</h1>
@@ -225,6 +220,7 @@
     <div class="genre-button" onclick="showGenre('rap')">🎤 Рэп</div>
     <div class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</div>
     <div class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</div>
+    <div class="genre-button" onclick="showGenre('road')">🛣️</div>
   </div>
 
   <div class="track-list" id="new-releases">
@@ -233,24 +229,18 @@
       <button onclick="playTrack('https://media.vocaroo.com/mp3/16ker4KT1gn3', 'Мот — День и ночь', 'https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg')">▶️</button>
     </div>
   </div>
+
   <div class="track-list" id="genre-tracks"></div>
 
   <div id="player-bar" style="display:none;">
     <div id="player-info">
-      <img id="track-img" src="" alt="Обложка" />
+      <img id="track-img" src="" alt="Обложка">
       <div id="track-name">Трек</div>
     </div>
     <div id="player-controls">
       <button onclick="togglePlayPause()" aria-label="Play/Pause">
         <svg id="play-icon" viewBox="0 0 24 24">
-          <polygon points="5 3 19 12 5 21 5 3" />
-        </svg>
-      </button>
-      <!-- Кнопка "Next" скрыта -->
-      <button id="next-button" onclick="playNext()" aria-label="Next">
-        <svg viewBox="0 0 24 24">
-          <polygon points="5 4 15 12 5 20 5 4" />
-          <line x1="19" y1="4" x2="19" y2="20" />
+          <polygon points="5 3 19 12 5 21 5 3"/>
         </svg>
       </button>
     </div>
@@ -269,19 +259,25 @@
       {
         title: "Мот — День и ночь",
         url: "https://media.vocaroo.com/mp3/16ker4KT1gn3",
-        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg"
       },
       {
         title: "Macan — L",
         url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM",
-        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg"
       },
       {
         title: "Macan — Заново",
         url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u",
-        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg"
       },
+      {
+        title: "Macan — Останься образом",
+        url: "https://voca.ro/1EmoFWHzaRO6",
+        img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg"
+      }
     ];
+
     let currentTrackIndex = 0;
 
     function playTrack(url, name, img) {
@@ -291,7 +287,7 @@
       trackName.textContent = name;
       trackImg.src = img;
       updatePlayPauseIcon(true);
-      currentTrackIndex = playlist.findIndex((t) => t.url === url);
+      currentTrackIndex = playlist.findIndex(t => t.url === url);
     }
 
     function togglePlayPause() {
@@ -308,12 +304,6 @@
       playIcon.innerHTML = isPlaying
         ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
         : '<polygon points="5 3 19 12 5 21 5 3"/>';
-    }
-
-    function playNext() {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      const track = playlist[currentTrackIndex];
-      playTrack(track.url, track.title, track.img);
     }
 
     function toggleMenu() {
@@ -336,23 +326,27 @@
       rap: [playlist[1]],
       jazz: [],
       lofi: [playlist[2]],
+      road: [...playlist]
     };
 
     function showGenre(genre) {
       document.getElementById("new-releases").style.display = "none";
       const container = document.getElementById("genre-tracks");
-      container.innerHTML = "";
-      genres[genre].forEach((track) => {
-        const div = document.createElement("div");
-        div.className = "track";
+      container.innerHTML = '';
+      genres[genre].forEach(track => {
+        const div = document.createElement('div');
+        div.className = 'track';
         div.innerHTML = `<span class="track-title">${track.title}</span>
           <button onclick="playTrack('${track.url}','${track.title}','${track.img}')">▶️</button>`;
         container.appendChild(div);
       });
     }
 
-    // Автоматически играть следующий трек по окончании
-    player.addEventListener("ended", playNext);
+    player.addEventListener('ended', () => {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      const nextTrack = playlist[currentTrackIndex];
+      playTrack(nextTrack.url, nextTrack.title, nextTrack.img);
+    });
   </script>
 </body>
 </html>
