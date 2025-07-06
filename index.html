@@ -174,16 +174,18 @@
       background: none;
       border: none;
       cursor: pointer;
-      color: #40e0d0;
-      font-size: 26px;
-      padding: 10px;
-      border-radius: 50%;
-      background-color: rgba(64,224,208,0.1);
-      box-shadow: 0 0 8px rgba(64,224,208,0.4);
+      padding: 0;
     }
 
-    #player-controls button:hover {
-      background-color: rgba(64,224,208,0.2);
+    #player-controls svg {
+      width: 36px;
+      height: 36px;
+      fill: #40e0d0;
+      transition: fill 0.3s;
+    }
+
+    #player-controls svg:hover {
+      fill: #1db954;
     }
   </style>
 </head>
@@ -221,13 +223,17 @@
 
   <div class="track-list" id="genre-tracks"></div>
 
-  <div id="player-bar" style="transform: translateY(0);">
+  <div id="player-bar">
     <div id="player-info">
       <img id="track-img" src="" alt="Обложка">
       <div id="track-name">Трек</div>
     </div>
     <div id="player-controls">
-      <button onclick="togglePlayPause()">⏯️</button>
+      <button onclick="togglePlayPause()" id="play-pause-button">
+        <svg id="play-icon" viewBox="0 0 24 24">
+          <polygon points="6,4 20,12 6,20" />
+        </svg>
+      </button>
     </div>
   </div>
 
@@ -238,7 +244,8 @@
           playerBar = document.getElementById("player-bar"),
           trackName = document.getElementById("track-name"),
           trackImg = document.getElementById("track-img"),
-          sideMenu = document.getElementById("side-menu");
+          sideMenu = document.getElementById("side-menu"),
+          playPauseButton = document.getElementById("play-pause-button");
 
     const playlist = [
       { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
@@ -254,11 +261,25 @@
       player.play();
       trackName.textContent = name;
       trackImg.src = img;
+      updatePlayPauseIcon();
     }
 
     function togglePlayPause() {
-      if (player.paused) player.play();
-      else player.pause();
+      if (player.paused) {
+        player.play();
+      } else {
+        player.pause();
+      }
+      updatePlayPauseIcon();
+    }
+
+    function updatePlayPauseIcon() {
+      const icon = document.getElementById("play-icon");
+      if (player.paused) {
+        icon.innerHTML = '<polygon points="6,4 20,12 6,20" />';
+      } else {
+        icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      }
     }
 
     function toggleMenu() {
