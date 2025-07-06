@@ -49,6 +49,7 @@
       font-size: 28px;
     }
 
+    /* Горизонтальное меню жанров */
     .genre-menu {
       display: flex;
       overflow-x: auto;
@@ -116,10 +117,56 @@
     .track button:hover {
       background-color: #1ed760;
     }
+
+    /* Выпадающее боковое меню */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -220px;
+      width: 200px;
+      height: 100%;
+      background-color: #111;
+      display: flex;
+      flex-direction: column;
+      padding: 60px 20px;
+      gap: 10px;
+      transition: left 0.3s;
+      z-index: 999;
+    }
+
+    .side-menu a,
+    .dropdown-toggle {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .side-menu a:hover,
+    .dropdown-toggle:hover {
+      color: #40e0d0;
+    }
+
+    .side-menu.open {
+      left: 0;
+    }
+
+    .dropdown-content {
+      display: none;
+      flex-direction: column;
+      padding-left: 10px;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    .dropdown.open .dropdown-content {
+      display: flex;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Хедер с иконками -->
   <header>
     <div class="icon">
       <!-- Гамбургер -->
@@ -134,9 +181,30 @@
     </div>
   </header>
 
+  <!-- Боковое меню -->
+  <nav id="side-menu" class="side-menu">
+    <a href="#">🏠 Главная</a>
+    <a href="#">📚 Библиотека</a>
+
+    <div class="dropdown">
+      <div class="dropdown-toggle" onclick="toggleDropdown()">🎧 Жанры ▾</div>
+      <div class="dropdown-content" id="genre-dropdown">
+        <a href="#" onclick="showGenre('pop')">🎤 Поп</a>
+        <a href="#" onclick="showGenre('rock')">🎸 Рок</a>
+        <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
+        <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
+        <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
+        <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
+      </div>
+    </div>
+
+    <a href="#">❤️ Избранное</a>
+    <a href="#">👤 Профиль</a>
+  </nav>
+
   <h1>Music Up</h1>
 
-  <!-- Меню жанров -->
+  <!-- Горизонтальное меню жанров -->
   <div class="genre-menu">
     <a href="#" class="genre-button" onclick="showGenre('pop')">🎤 Поп</a>
     <a href="#" class="genre-button" onclick="showGenre('rock')">🎸 Рок</a>
@@ -243,6 +311,14 @@
         container.appendChild(div);
       });
     }
+
+    function toggleDropdown() {
+      document.querySelector(".dropdown").classList.toggle("open");
+    }
+
+    document.querySelector(".icon").addEventListener("click", function () {
+      document.getElementById("side-menu").classList.toggle("open");
+    });
   </script>
 
 </body>
