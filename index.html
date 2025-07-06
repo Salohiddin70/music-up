@@ -2,104 +2,121 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Music Up</title>
+  <title>Music Up — Macan Playlist</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #000;
       color: #fff;
-      padding-bottom: 60px; /* для нижнего меню */
+      overflow-x: hidden;
     }
     header {
+      background-color: #111;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .menu-icon {
+      font-size: 24px;
+      cursor: pointer;
+      color: #40e0d0;
+    }
+    .search-bar {
+      flex: 1;
       text-align: center;
+    }
+    .search-bar input {
+      padding: 8px 15px;
+      width: 70%;
+      max-width: 300px;
+      border: none;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+    .profile-icon {
+      font-size: 24px;
+      color: #40e0d0;
+    }
+    nav {
+      display: none;
+      flex-direction: column;
+      background-color: #111;
       padding: 20px;
     }
-    header h1 {
-      color: #40e0d0;
-      font-size: 28px;
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      padding: 10px 0;
+      font-size: 16px;
     }
-    .section-title {
-      font-size: 20px;
-      margin: 20px;
+    nav a:hover {
       color: #40e0d0;
+    }
+    h1 {
+      text-align: center;
+      color: #40e0d0;
+      margin: 20px 0;
+      font-size: 28px;
     }
     .genres, .playlist {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
-      padding: 0 10px;
+      padding: 10px 20px;
     }
     .card {
-      background-color: #111;
+      background-color: rgba(255, 255, 255, 0.05);
       border-radius: 10px;
       padding: 10px;
       width: 160px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
     .card img {
       width: 100%;
       border-radius: 10px;
-      margin-bottom: 10px;
-      height: 100px;
+      height: 160px;
       object-fit: cover;
     }
     .title {
-      font-size: 14px;
+      margin-top: 8px;
       font-weight: bold;
-      margin-bottom: 5px;
     }
     .artist {
-      font-size: 12px;
-      color: #ccc;
-      margin-bottom: 10px;
+      font-size: 14px;
+      color: #aaa;
+      margin: 5px 0;
     }
     .play-btn {
       background-color: #1db954;
       border: none;
-      padding: 6px 12px;
+      padding: 6px 15px;
       border-radius: 20px;
       color: white;
-      font-size: 12px;
+      font-size: 14px;
       cursor: pointer;
     }
-    .play-btn:hover { background-color: #1ed760; }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background-color: #111;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid #222;
-      z-index: 1000;
-    }
-    .bottom-nav a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 12px;
-      text-align: center;
-    }
-    .bottom-nav a span {
-      display: block;
-      font-size: 20px;
+    .play-btn:hover {
+      background-color: #1ed760;
     }
     audio {
       width: 100%;
       margin-top: 20px;
-      display: block;
     }
-
     @media (min-width: 768px) {
-      .card {
-        width: 200px;
+      nav {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
       }
     }
   </style>
@@ -107,47 +124,66 @@
 <body>
 
   <header>
-    <h1>Music Up</h1>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Поиск..." oninput="searchSongs(this.value)" />
+    </div>
+    <div class="profile-icon">👤</div>
   </header>
 
-  <div class="section-title">🎵 Жанры</div>
+  <nav id="menu">
+    <a href="#">🏠 Главная</a>
+    <a href="#">🎧 Библиотека</a>
+    <a href="#">❤️ Сохранённые</a>
+    <a href="#">🔍 Поиск</a>
+    <a href="#">👤 Профиль</a>
+  </nav>
+
+  <h1>Music Up</h1>
+
   <div class="genres">
     <div class="card">
-      <img src="https://i.imgur.com/nCfcP3T.jpeg" alt="Pop">
+      <img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=400&q=80" alt="Поп">
       <div class="title">Поп</div>
     </div>
     <div class="card">
-      <img src="https://i.imgur.com/I3zvqYx.jpeg" alt="Rock">
+      <img src="https://images.unsplash.com/photo-1511376777868-611b54f68947?auto=format&fit=crop&w=400&q=80" alt="Рок">
       <div class="title">Рок</div>
     </div>
     <div class="card">
-      <img src="https://i.imgur.com/rE39fqK.jpeg" alt="Lo-fi">
+      <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80" alt="Lo-fi">
       <div class="title">Lo-fi</div>
     </div>
     <div class="card">
-      <img src="https://i.imgur.com/Txqk4f6.jpeg" alt="Jazz">
+      <img src="https://images.unsplash.com/photo-1525286116112-b59af11adad1?auto=format&fit=crop&w=400&q=80" alt="Джаз">
       <div class="title">Джаз</div>
     </div>
   </div>
 
-  <div class="section-title">🔥 Macan</div>
   <div class="playlist" id="playlist">
-    <div class="card">
-      <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
+    <!-- Карточка с Macan и твоим фото -->
+    <div class="card" data-title="Май" data-artist="Macan">
+      <img class="cover" src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
       <div class="title">Май</div>
       <div class="artist">Macan</div>
       <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/292d19b1f2b989f1c46d393c204a4eb3/Makan_-_Maj.mp3')">▶️ Играть</button>
     </div>
+    <!-- Остальные песни -->
+    <div class="card" data-title="Заново" data-artist="Macan">
+      <img class="cover" src="https://i.imgur.com/0YrLbdn.jpeg" alt="Заново">
+      <div class="title">Заново</div>
+      <div class="artist">Macan</div>
+      <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/0c1eae15cf76bfa9ffb85ff3d29cc3b3/Macan_-_Zanovo.mp3')">▶️ Играть</button>
+    </div>
+    <div class="card" data-title="Останься образом" data-artist="Macan">
+      <img class="cover" src="https://i.imgur.com/kVKMCKr.jpeg" alt="Останься образом">
+      <div class="title">Останься образом</div>
+      <div class="artist">Macan</div>
+      <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/98b8fc2e29cd2e37d4c2e94d275aa814/Macan_-_Ostansya_obrazom.mp3')">▶️ Играть</button>
+    </div>
   </div>
 
   <audio id="player" controls></audio>
-
-  <nav class="bottom-nav">
-    <a href="#"><span>🏠</span><br>Home</a>
-    <a href="#"><span>🔍</span><br>Поиск</a>
-    <a href="#"><span>🎧</span><br>Библиотека</a>
-    <a href="#"><span>👤</span><br>Профиль</a>
-  </nav>
 
   <script>
     const player = document.getElementById('player');
@@ -156,6 +192,26 @@
       player.pause();
       player.src = url;
       player.play();
+    }
+
+    function searchSongs(query) {
+      const cards = document.querySelectorAll('.card');
+      query = query.toLowerCase();
+
+      cards.forEach(card => {
+        const title = card.dataset.title?.toLowerCase() || '';
+        const artist = card.dataset.artist?.toLowerCase() || '';
+        if (title.includes(query) || artist.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
   </script>
 
