@@ -8,16 +8,19 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #000;
+      background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
       color: #fff;
     }
 
     header {
-      background-color: #111;
+      background-color: rgba(0,0,0,0.4);
       padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .icon svg {
@@ -54,7 +57,7 @@
       display: flex;
       overflow-x: auto;
       white-space: nowrap;
-      background-color: #111;
+      background-color: rgba(0,0,0,0.4);
       padding: 10px;
       gap: 10px;
       scrollbar-width: none;
@@ -92,7 +95,7 @@
 
     .track {
       margin-bottom: 15px;
-      background-color: #111;
+      background-color: rgba(0, 0, 0, 0.4);
       padding: 10px 15px;
       border-radius: 10px;
       display: flex;
@@ -118,14 +121,14 @@
       background-color: #1ed760;
     }
 
-    /* Выпадающее боковое меню */
+    /* Боковое меню */
     .side-menu {
       position: fixed;
       top: 0;
       left: -220px;
       width: 200px;
       height: 100%;
-      background-color: #111;
+      background-color: rgba(0, 0, 0, 0.95);
       display: flex;
       flex-direction: column;
       padding: 60px 20px;
@@ -166,24 +169,22 @@
 </head>
 <body>
 
-  <!-- Хедер с иконками -->
+  <!-- Хедер -->
   <header>
     <div class="icon">
-      <!-- Гамбургер -->
       <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>
     </div>
     <div class="search-bar">
       <input type="text" placeholder="Поиск..." oninput="searchTracks(this.value)" />
     </div>
     <div class="icon">
-      <!-- Профиль -->
       <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
     </div>
   </header>
 
   <!-- Боковое меню -->
   <nav id="side-menu" class="side-menu">
-    <a href="#">🏠 Главная</a>
+    <a href="#" onclick="goHome()">🏠 Главная</a>
     <a href="#">📚 Библиотека</a>
 
     <div class="dropdown">
@@ -204,7 +205,7 @@
 
   <h1>Music Up</h1>
 
-  <!-- Горизонтальное меню жанров -->
+  <!-- Меню жанров -->
   <div class="genre-menu">
     <a href="#" class="genre-button" onclick="showGenre('pop')">🎤 Поп</a>
     <a href="#" class="genre-button" onclick="showGenre('rock')">🎸 Рок</a>
@@ -223,7 +224,7 @@
     </div>
   </div>
 
-  <!-- Треки по жанрам -->
+  <!-- Контент по жанрам -->
   <div class="section-title" id="genre-title"></div>
   <div class="track-list" id="genre-tracks"></div>
 
@@ -319,6 +320,12 @@
     document.querySelector(".icon").addEventListener("click", function () {
       document.getElementById("side-menu").classList.toggle("open");
     });
+
+    function goHome() {
+      document.getElementById("genre-title").textContent = "";
+      document.getElementById("genre-tracks").innerHTML = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   </script>
 
 </body>
