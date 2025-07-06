@@ -8,26 +8,28 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #fff;
+      padding-bottom: 120px; /* место под нижний плеер */
+      min-height: 100vh;
     }
 
     header {
-      background-color: rgba(0,0,0,0.4);
-      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.6);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 10px 20px;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
     }
 
-    .icon svg {
-      width: 26px;
-      height: 26px;
-      fill: #40e0d0;
+    .menu-icon, .profile-icon {
+      width: 28px;
+      height: 28px;
       cursor: pointer;
+      fill: #40e0d0;
     }
 
     .search-bar {
@@ -39,27 +41,55 @@
       padding: 8px 15px;
       width: 70%;
       max-width: 300px;
-      border: none;
       border-radius: 20px;
-      outline: none;
+      border: none;
       font-size: 14px;
+      outline: none;
+    }
+
+    nav.side-menu {
+      position: fixed;
+      top: 0;
+      left: -230px;
+      width: 200px;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      padding: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      transition: left 0.3s;
+      z-index: 1000;
+    }
+
+    nav.side-menu.open {
+      left: 0;
+    }
+
+    nav.side-menu a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    nav.side-menu a:hover {
+      color: #40e0d0;
     }
 
     h1 {
       text-align: center;
       color: #40e0d0;
       margin: 20px 0;
-      font-size: 28px;
+      font-size: 26px;
     }
 
-    /* Горизонтальное меню жанров */
     .genre-menu {
       display: flex;
       overflow-x: auto;
       white-space: nowrap;
-      background-color: rgba(0,0,0,0.4);
-      padding: 10px;
       gap: 10px;
+      padding: 10px;
+      background-color: rgba(0,0,0,0.2);
       scrollbar-width: none;
     }
 
@@ -68,44 +98,30 @@
     }
 
     .genre-button {
-      flex: 0 0 auto;
       padding: 8px 16px;
-      border-radius: 20px;
       background: linear-gradient(90deg, #40e0d0, #1db954);
       color: #fff;
-      font-size: 14px;
+      border-radius: 20px;
       text-decoration: none;
-      transition: background 0.3s;
-    }
-
-    .genre-button:hover {
-      background: linear-gradient(90deg, #1db954, #40e0d0);
-    }
-
-    .section-title {
-      font-size: 20px;
-      margin: 20px;
-      text-align: center;
-      color: #1db954;
+      flex-shrink: 0;
     }
 
     .track-list {
-      padding: 0 20px 40px;
+      padding: 20px;
     }
 
     .track {
-      margin-bottom: 15px;
-      background-color: rgba(0, 0, 0, 0.4);
-      padding: 10px 15px;
+      background-color: rgba(0,0,0,0.4);
       border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .track-title {
-      font-size: 16px;
-      color: #fff;
+      font-size: 15px;
     }
 
     .track button {
@@ -117,216 +133,156 @@
       cursor: pointer;
     }
 
-    .track button:hover {
-      background-color: #1ed760;
-    }
-
-    /* Боковое меню */
-    .side-menu {
+    #player-bar {
       position: fixed;
-      top: 0;
-      left: -220px;
-      width: 200px;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.95);
-      display: flex;
-      flex-direction: column;
-      padding: 60px 20px;
-      gap: 10px;
-      transition: left 0.3s;
-      z-index: 999;
-    }
-
-    .side-menu a,
-    .dropdown-toggle {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .side-menu a:hover,
-    .dropdown-toggle:hover {
-      color: #40e0d0;
-    }
-
-    .side-menu.open {
+      bottom: 0;
       left: 0;
-    }
-
-    .dropdown-content {
-      display: none;
-      flex-direction: column;
-      padding-left: 10px;
-      gap: 5px;
-      margin-top: 5px;
-    }
-
-    .dropdown.open .dropdown-content {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      z-index: 1001;
+    }
+
+    #player-bar img {
+      height: 50px;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    #player-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    #player-controls button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      margin: 0 10px;
+      cursor: pointer;
     }
   </style>
 </head>
-<body>
+<body onclick="closeMenu(event)">
 
-  <!-- Хедер -->
-  <header>
-    <div class="icon">
-      <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>
-    </div>
-    <div class="search-bar">
-      <input type="text" placeholder="Поиск..." oninput="searchTracks(this.value)" />
-    </div>
-    <div class="icon">
-      <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
-    </div>
-  </header>
-
-  <!-- Боковое меню -->
-  <nav id="side-menu" class="side-menu">
-    <a href="#" onclick="goHome()">🏠 Главная</a>
-    <a href="#">📚 Библиотека</a>
-
-    <div class="dropdown">
-      <div class="dropdown-toggle" onclick="toggleDropdown()">🎧 Жанры ▾</div>
-      <div class="dropdown-content" id="genre-dropdown">
-        <a href="#" onclick="showGenre('pop')">🎤 Поп</a>
-        <a href="#" onclick="showGenre('rock')">🎸 Рок</a>
-        <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
-        <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
-        <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
-        <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
-      </div>
-    </div>
-
-    <a href="#">❤️ Избранное</a>
-    <a href="#">👤 Профиль</a>
-  </nav>
-
-  <h1>Music Up</h1>
-
-  <!-- Меню жанров -->
-  <div class="genre-menu">
-    <a href="#" class="genre-button" onclick="showGenre('pop')">🎤 Поп</a>
-    <a href="#" class="genre-button" onclick="showGenre('rock')">🎸 Рок</a>
-    <a href="#" class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
-    <a href="#" class="genre-button" onclick="showGenre('rap')">🎤 Рэп</a>
-    <a href="#" class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</a>
-    <a href="#" class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</a>
+<header>
+  <svg class="menu-icon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M3 6h18M3 12h18M3 18h18"/>
+  </svg>
+  <div class="search-bar">
+    <input type="text" placeholder="Поиск..." oninput="searchTracks(this.value)" />
   </div>
+  <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+  </svg>
+</header>
 
-  <!-- Новинки -->
-  <div class="section-title">🔥 Новинки</div>
-  <div class="track-list" id="new-releases">
-    <div class="track">
-      <span class="track-title">Мот — День и ночь</span>
-      <button onclick="playTrack('https://voca.ro/16ker4KT1gn3')">▶️</button>
-    </div>
+<nav class="side-menu" id="side-menu">
+  <a href="#" onclick="goHome()">🏠 Главная</a>
+  <a href="#">📚 Библиотека</a>
+  <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
+  <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
+  <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
+  <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
+</nav>
+
+<h1>Music Up</h1>
+
+<div class="genre-menu">
+  <a href="#" class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
+  <a href="#" class="genre-button" onclick="showGenre('rap')">🎤 Рэп</a>
+  <a href="#" class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</a>
+  <a href="#" class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</a>
+</div>
+
+<div class="track-list" id="new-releases">
+  <div class="track">
+    <span class="track-title">Мот — День и ночь</span>
+    <button onclick="playTrack('https://voca.ro/16ker4KT1gn3', 'День и ночь', 'https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg')">▶️</button>
   </div>
+</div>
 
-  <!-- Контент по жанрам -->
-  <div class="section-title" id="genre-title"></div>
-  <div class="track-list" id="genre-tracks"></div>
+<div class="track-list" id="genre-tracks"></div>
 
-  <audio id="player" controls style="width:100%; margin-top: 20px;"></audio>
+<!-- Нижний плеер -->
+<div id="player-bar" style="display:none;">
+  <div id="player-info">
+    <img src="" id="track-img" alt="Обложка">
+    <div id="track-name">Трек</div>
+  </div>
+  <div id="player-controls">
+    <button onclick="player.pause()">⏸️</button>
+    <button onclick="player.play()">▶️</button>
+  </div>
+</div>
 
-  <script>
-    const player = document.getElementById('player');
+<audio id="player" hidden></audio>
 
-    const genres = {
-      hiphop: [
-        { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM" },
-        { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u" },
-        { title: "Macan — Останься образом", url: "https://media.vocaroo.com/mp3/1fNWBhahQ6Mo" },
-        { title: "Мот — День и ночь", url: "https://voca.ro/16ker4KT1gn3" }
-      ],
-      pop: [],
-      rock: [],
-      rap: [],
-      lofi: [],
-      jazz: []
-    };
+<script>
+  const player = document.getElementById("player");
+  const playerBar = document.getElementById("player-bar");
+  const trackName = document.getElementById("track-name");
+  const trackImg = document.getElementById("track-img");
 
-    function playTrack(url) {
-      player.src = url;
-      player.play();
+  const sideMenu = document.getElementById("side-menu");
+
+  function playTrack(url, name, img) {
+    player.src = url;
+    player.play();
+    playerBar.style.display = "flex";
+    trackName.textContent = name;
+    trackImg.src = img;
+  }
+
+  function toggleMenu() {
+    sideMenu.classList.toggle("open");
+  }
+
+  function closeMenu(e) {
+    if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
+      sideMenu.classList.remove("open");
     }
+  }
 
-    function showGenre(genre) {
-      const list = genres[genre] || [];
-      const title = document.getElementById("genre-title");
-      const container = document.getElementById("genre-tracks");
+  function goHome() {
+    document.getElementById("new-releases").style.display = "block";
+    document.getElementById("genre-tracks").innerHTML = "";
+  }
 
-      title.textContent = genreNames[genre] || "";
-      container.innerHTML = "";
+  function showGenre(genre) {
+    document.getElementById("new-releases").style.display = "none";
+    const container = document.getElementById("genre-tracks");
+    container.innerHTML = "";
 
-      if (list.length === 0) {
-        container.innerHTML = "<p style='text-align:center; color: #888;'>Пока нет песен в этом жанре.</p>";
-        return;
-      }
-
-      list.forEach(song => {
-        const div = document.createElement("div");
-        div.className = "track";
-        div.innerHTML = `
-          <span class="track-title">${song.title}</span>
-          <button onclick="playTrack('${song.url}')">▶️</button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    const genreNames = {
-      pop: "🎤 Поп",
-      rock: "🎸 Рок",
-      hiphop: "🎧 Хип-хоп",
-      rap: "🎤 Рэп",
-      lofi: "🌙 Lo-fi",
-      jazz: "🎷 Джаз"
-    };
-
-    function searchTracks(query) {
-      const lower = query.toLowerCase();
-      const container = document.getElementById("genre-tracks");
-      const allTracks = Object.values(genres).flat();
-
-      const filtered = allTracks.filter(track =>
-        track.title.toLowerCase().includes(lower)
-      );
-
-      document.getElementById("genre-title").textContent = "🔍 Результаты поиска";
-      container.innerHTML = "";
-
-      if (filtered.length === 0) {
-        container.innerHTML = "<p style='text-align:center; color: #888;'>Ничего не найдено.</p>";
-        return;
-      }
-
-      filtered.forEach(track => {
-        const div = document.createElement("div");
-        div.className = "track";
-        div.innerHTML = `
-          <span class="track-title">${track.title}</span>
-          <button onclick="playTrack('${track.url}')">▶️</button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function toggleDropdown() {
-      document.querySelector(".dropdown").classList.toggle("open");
-    }
-
-    document.querySelector(".icon").addEventListener("click", function () {
-      document.getElementById("side-menu").classList.toggle("open");
+    const songs = genres[genre] || [];
+    songs.forEach(track => {
+      const div = document.createElement("div");
+      div.className = "track";
+      div.innerHTML = `
+        <span class="track-title">${track.title}</span>
+        <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}')">▶️</button>
+      `;
+      container.appendChild(div);
     });
+  }
 
-    function goHome() {
-      document.getElementById("genre-title").textContent = "";
-      document.getElementById("genre-tracks").innerHTML = "";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  </script>
+  const genres = {
+    hiphop: [
+      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+      { title: "Мот — День и ночь", url: "https://voca.ro/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" }
+    ],
+    rap: [],
+    jazz: [],
+    lofi: []
+  };
+</script>
 
 </body>
 </html>
