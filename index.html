@@ -129,6 +129,10 @@
         gap: 30px;
       }
     }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -156,29 +160,11 @@
     <!-- Поп -->
     <div class="genre-title">Поп</div>
     <div class="playlist">
-
-      <!-- Песни Macan (Скрыты визуально, но находятся в DOM и появятся при поиске) -->
-      <div class="card macan" data-title="L" data-artist="Macan" style="display: none;">
-        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
-        <div class="title">L</div>
-        <div class="artist">Macan</div>
-        <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1iX95z5SQfOM')">▶️ Играть</button>
+      <div class="card">
+        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Поп">
+        <div class="title">Поп</div>
+        <div class="artist">Поп музыка</div>
       </div>
-
-      <div class="card macan" data-title="Заново" data-artist="Macan" style="display: none;">
-        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
-        <div class="title">Заново</div>
-        <div class="artist">Macan</div>
-        <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1Z155EzK1A4u')">▶️ Играть</button>
-      </div>
-
-      <div class="card macan" data-title="Останься образом" data-artist="Macan" style="display: none;">
-        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
-        <div class="title">Останься образом</div>
-        <div class="artist">Macan</div>
-        <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1fNWBhahQ6Mo')">▶️ Играть</button>
-      </div>
-
     </div>
 
     <!-- Рок -->
@@ -225,6 +211,28 @@
       </div>
     </div>
 
+    <!-- Песни Macan (скрытые, но доступны для поиска) -->
+    <div class="playlist hidden">
+      <div class="card" data-title="L" data-artist="Macan">
+        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
+        <div class="title">L</div>
+        <div class="artist">Macan</div>
+        <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1iX95z5SQfOM')">▶️ Играть</button>
+      </div>
+      <div class="card" data-title="Заново" data-artist="Macan">
+        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
+        <div class="title">Заново</div>
+        <div class="artist">Macan</div>
+        <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1Z155EzK1A4u')">▶️ Играть</button>
+      </div>
+      <div class="card" data-title="Останься образом" data-artist="Macan">
+        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" alt="Macan">
+        <div class="title">Останься образом</div>
+        <div class="artist">Macan</div>
+        <button class="play-btn" onclick="playSong('https://media.vocaroo.com/mp3/1fNWBhahQ6Mo')">▶️ Играть</button>
+      </div>
+    </div>
+
   </div>
 
   <audio id="player" controls></audio>
@@ -241,13 +249,13 @@
     function searchSongs(query) {
       query = query.toLowerCase();
       document.querySelectorAll('.card').forEach(card => {
-        const title = card.dataset.title?.toLowerCase() || '';
-        const artist = card.dataset.artist?.toLowerCase() || '';
-        if (query && (title.includes(query) || artist.includes(query))) {
+        const t = card.dataset.title?.toLowerCase() || '';
+        const a = card.dataset.artist?.toLowerCase() || '';
+        if (t.includes(query) || a.includes(query)) {
+          card.parentElement.classList.remove('hidden');
           card.style.display = 'block';
         } else {
-          // Скрытые Macan остаются скрытыми, если нет поиска
-          card.style.display = card.classList.contains('macan') ? 'none' : '';
+          card.style.display = 'none';
         }
       });
     }
