@@ -5,18 +5,14 @@
   <title>Music Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #fff;
       padding-bottom: 120px;
       min-height: 100vh;
+      transition: background 0.6s ease;
     }
 
     header {
@@ -35,7 +31,7 @@
       height: 30px;
       cursor: pointer;
       stroke: #40e0d0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0,0,0,0.4);
       border-radius: 50%;
       padding: 6px;
       box-shadow: 0 0 12px #40e0d0;
@@ -47,10 +43,7 @@
       stroke-width: 2.5;
     }
 
-    .search-bar {
-      flex: 1;
-      text-align: center;
-    }
+    .search-bar { flex: 1; text-align: center; }
 
     .search-bar input {
       padding: 8px 15px;
@@ -101,7 +94,7 @@
       white-space: nowrap;
       gap: 10px;
       padding: 10px;
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(0,0,0,0.3);
       box-shadow: inset 0 0 14px rgba(64,224,208,0.3);
     }
 
@@ -130,38 +123,30 @@
       box-shadow: 0 0 12px rgba(64,224,208,0.2);
     }
 
-    .track-title {
-      font-size: 15px;
-    }
+    .track-title { font-size: 15px; }
 
     .track button {
       background: transparent;
       border: none;
-      color: #40e0d0;
-      font-size: 22px;
+      font-size: 24px;
       cursor: pointer;
-    }
-
-    .track button:hover {
       color: #1db954;
     }
 
     #player-bar {
       position: fixed;
-      bottom: 10px;
-      left: 10px;
-      right: 10px;
-      background: rgba(255, 255, 255, 0.95);
-      color: #000;
-      border-radius: 18px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      display: none;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(20px);
+      display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
+      box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
       z-index: 1001;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      backdrop-filter: blur(12px);
+      transition: transform 0.4s ease, background 0.5s ease;
     }
 
     #player-info {
@@ -171,8 +156,9 @@
     }
 
     #track-img {
-      height: 50px;
+      height: 48px;
       border-radius: 8px;
+      box-shadow: 0 0 8px rgba(64,224,208,0.5);
     }
 
     #player-controls {
@@ -184,14 +170,14 @@
     #player-controls button {
       background: none;
       border: none;
-      color: #000;
-      font-size: 20px;
+      font-size: 28px;
+      color: #fff;
       cursor: pointer;
       transition: transform 0.2s;
     }
 
-    #player-controls button:hover {
-      transform: scale(1.2);
+    #player-controls button:active {
+      transform: scale(1.1);
     }
   </style>
 </head>
@@ -208,7 +194,6 @@
     <a href="#" onclick="goHome()">🏠 Главная</a>
     <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
     <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
-    <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
     <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
     <a href="#" onclick="showGenre('road')">🛣️ Дорога</a>
   </nav>
@@ -218,21 +203,20 @@
   <div class="genre-menu">
     <div class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</div>
     <div class="genre-button" onclick="showGenre('rap')">🎤 Рэп</div>
-    <div class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</div>
     <div class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</div>
     <div class="genre-button" onclick="showGenre('road')">🛣️ Дорога</div>
   </div>
 
   <div class="track-list" id="genre-tracks"></div>
 
-  <div id="player-bar">
+  <div id="player-bar" style="transform: translateY(100%)">
     <div id="player-info">
       <img id="track-img" src="" alt="Обложка">
       <div id="track-name">Трек</div>
     </div>
     <div id="player-controls">
       <button onclick="prevTrack()">⏮️</button>
-      <button onclick="togglePlayPause()" id="play-btn">▶️</button>
+      <button onclick="togglePlayPause()" id="play-pause-btn">⏯️</button>
       <button onclick="nextTrack()">⏭️</button>
     </div>
   </div>
@@ -244,8 +228,7 @@
           playerBar = document.getElementById("player-bar"),
           trackName = document.getElementById("track-name"),
           trackImg = document.getElementById("track-img"),
-          playBtn = document.getElementById("play-btn"),
-          sideMenu = document.getElementById("side-menu");
+          playBtn = document.getElementById("play-pause-btn");
 
     const playlist = [
       { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
@@ -256,14 +239,12 @@
 
     let currentTrackIndex = 0;
 
-    function playTrack(url, name, img) {
+    function playTrack(url, title, img) {
       player.src = url;
       player.play();
-      playerBar.style.display = "flex";
-      trackName.textContent = name;
+      trackName.textContent = title;
       trackImg.src = img;
-      playBtn.textContent = "⏸️";
-      currentTrackIndex = playlist.findIndex(t => t.url === url);
+      playerBar.style.transform = "translateY(0)";
     }
 
     function togglePlayPause() {
@@ -278,58 +259,56 @@
 
     function prevTrack() {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-      const t = playlist[currentTrackIndex];
-      playTrack(t.url, t.title, t.img);
+      const track = playlist[currentTrackIndex];
+      playTrack(track.url, track.title, track.img);
     }
 
     function nextTrack() {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      const t = playlist[currentTrackIndex];
-      playTrack(t.url, t.title, t.img);
+      const track = playlist[currentTrackIndex];
+      playTrack(track.url, track.title, track.img);
     }
 
-    function toggleMenu() {
-      sideMenu.classList.toggle("open");
-    }
-
-    function closeMenu(e) {
-      if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
-        sideMenu.classList.remove("open");
-      }
-    }
-
-    const genres = {
-      hiphop: [playlist[0]],
-      rap: [playlist[1]],
-      jazz: [],
-      lofi: [playlist[2]],
-      road: playlist
-    };
+    player.addEventListener('ended', nextTrack);
 
     function showGenre(genre) {
+      const genreTracks = {
+        hiphop: [playlist[0]],
+        rap: [playlist[1]],
+        lofi: [playlist[2]],
+        road: playlist
+      };
       const container = document.getElementById("genre-tracks");
       container.innerHTML = '';
-      genres[genre].forEach(track => {
-        const div = document.createElement('div');
-        div.className = 'track';
+      genreTracks[genre].forEach(track => {
+        const div = document.createElement("div");
+        div.className = "track";
         div.innerHTML = `<span class="track-title">${track.title}</span>
-          <button onclick="playTrack('${track.url}','${track.title}','${track.img}')">▶️</button>`;
+          <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}')">▶️</button>`;
         container.appendChild(div);
       });
     }
 
-    player.addEventListener("ended", nextTrack);
+    function toggleMenu() {
+      document.getElementById("side-menu").classList.toggle("open");
+    }
 
-    // swipe gestures
-    let touchStartX = 0;
-    playerBar.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
-    playerBar.addEventListener("touchend", e => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      if (dx > 50) prevTrack();
-      else if (dx < -50) nextTrack();
-    });
+    function closeMenu(e) {
+      if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
+        document.getElementById("side-menu").classList.remove("open");
+      }
+    }
 
     showGenre("hiphop");
+
+    // Свайп
+    let startX = 0;
+    playerBar.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+    playerBar.addEventListener("touchend", e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (dx > 50) prevTrack();
+      if (dx < -50) nextTrack();
+    });
   </script>
 </body>
 </html>
