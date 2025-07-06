@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Music Up — Makkan Playlist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #000, #40e0d0);
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 30px;
+      color: #40e0d0;
+    }
+    .playlist {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 15px;
+      width: 90%;
+      max-width: 320px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    }
+    .cover {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .artist {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+    .play-btn {
+      background-color: #1db954;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .play-btn:hover {
+      background-color: #1ed760;
+    }
+    audio {
+      width: 90%;
+      margin-top: 30px;
+    }
+    @media (max-width: 600px) {
+      .cover {
+        width: 200px;
+        height: 200px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎶 Music Up — Makkan Playlist</h1>
+  <div class="playlist">
+    <div class="card">
+      <img class="cover" src="https://i.imgur.com/93uHErb.jpeg" alt="Май">
+      <div class="title">Май</div>
+      <div class="artist">Макан</div>
+      <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/292d19b1f2b989f1c46d393c204a4eb3/Makan_-_Maj.mp3')">▶️ Играть</button>
+    </div>
+    <div class="card">
+      <img class="cover" src="https://i.imgur.com/0YrLbdn.jpeg" alt="Патроны">
+      <div class="title">Патроны</div>
+      <div class="artist">Макан</div>
+      <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/34250a23358ed9e520bb0d79c5f3e401/Makan_-_Patrony.mp3')">▶️ Играть</button>
+    </div>
+    <div class="card">
+      <img class="cover" src="https://i.imgur.com/kVKMCKr.jpeg" alt="Районы">
+      <div class="title">Районы</div>
+      <div class="artist">Макан</div>
+      <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/89a11fdd44f0eec8f2d7d1e3f2392a5f/Makan_-_Rajony.mp3')">▶️ Играть</button>
+    </div>
+  </div>
+  <audio id="player" controls style="display:none"></audio>
+  <script>
+    function playSong(url) {
+      const player = document.getElementById('player');
+      player.src = url;
+      player.style.display = 'block';
+      player.play();
+    }
+  </script>
+</body>
+</html>
