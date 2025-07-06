@@ -24,13 +24,24 @@
       z-index: 100;
     }
     .menu-icon, .profile-icon {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       cursor: pointer;
-      fill: #40e0d0;
+      stroke: #40e0d0;
+      background: rgba(0,0,0,0.4);
       border-radius: 50%;
       padding: 6px;
-      transition: background 0.3s;
+      box-shadow: 0 0 12px #40e0d0;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .menu-icon:hover, .profile-icon:hover {
+      background: rgba(64,224,208,0.2);
+      box-shadow: 0 0 16px #40e0d0;
+    }
+    .menu-icon svg, .profile-icon svg {
+      width: 100%;
+      height: 100%;
+      stroke-width: 2.5;
     }
     .search-bar {
       flex: 1;
@@ -74,8 +85,8 @@
       text-align: center;
       color: #40e0d0;
       margin: 20px 0;
-      font-size: 32px;
-      text-shadow: 0 0 8px #40e0d0, 0 0 16px #1db954;
+      font-size: 34px;
+      text-shadow: 0 0 12px #40e0d0, 0 0 24px #1db954;
     }
     .genre-menu {
       display: flex;
@@ -84,9 +95,7 @@
       gap: 10px;
       padding: 10px;
       background-color: rgba(0,0,0,0.3);
-    }
-    .genre-menu::-webkit-scrollbar {
-      display: none;
+      box-shadow: inset 0 0 14px rgba(64,224,208,0.3);
     }
     .genre-button {
       padding: 8px 16px;
@@ -94,65 +103,64 @@
       color: #40e0d0;
       border: 1px solid #40e0d0;
       border-radius: 20px;
-      text-decoration: none;
-      flex-shrink: 0;
-      box-shadow: 0 0 6px #40e0d0;
-      transition: background 0.3s;
+      box-shadow: 0 0 10px #40e0d0;
+      transition: background 0.3s, box-shadow 0.3s;
     }
     .genre-button:hover {
-      background-color: rgba(64, 224, 208, 0.1);
+      background: rgba(64,224,208,0.1);
+      box-shadow: 0 0 14px #40e0d0;
     }
     .track-list {
       padding: 20px;
     }
     .track {
       background-color: rgba(0,0,0,0.4);
-      border: 1px solid rgba(64, 224, 208, 0.2);
+      border: 1px solid rgba(64,224,208,0.2);
       border-radius: 10px;
       padding: 12px;
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 0 10px rgba(64, 224, 208, 0.15);
+      box-shadow: 0 0 12px rgba(64,224,208,0.2);
     }
     .track-title {
       font-size: 15px;
     }
     .track button {
-      background-color: transparent;
+      background: transparent;
       border: none;
       color: #40e0d0;
-      cursor: pointer;
-      font-size: 20px;
+      font-size: 22px;
+      transition: color 0.3s;
+    }
+    .track button:hover {
+      color: #1db954;
     }
     #player-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
+      box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
       z-index: 1001;
     }
-    #player-bar img {
+    #player-info img {
       height: 50px;
       border-radius: 5px;
       margin-right: 10px;
-    }
-    #player-info {
-      flex: 1;
-      display: flex;
-      align-items: center;
+      box-shadow: 0 0 10px rgba(64,224,208,0.4);
     }
     #player-controls {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 20px;
     }
     #player-controls button {
       background: none;
@@ -165,30 +173,26 @@
       color: #40e0d0;
     }
     #player-controls svg {
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       stroke: currentColor;
       stroke-width: 2.5;
       fill: none;
       stroke-linecap: round;
       stroke-linejoin: round;
+      filter: drop-shadow(0 0 4px rgba(64,224,208,0.7));
     }
   </style>
 </head>
 <body onclick="closeMenu(event)">
   <header>
-    <svg class="menu-icon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <line x1="3" y1="6" x2="21" y2="6"/>
-      <line x1="3" y1="12" x2="21" y2="12"/>
-      <line x1="3" y1="18" x2="21" y2="18"/>
-    </svg>
-    <div class="search-bar">
-      <input type="text" placeholder="Поиск..." oninput="searchTracks(this.value)" />
+    <div class="menu-icon" onclick="toggleMenu()">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </div>
-    <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <circle cx="12" cy="7" r="4"/>
-      <path d="M5.5 21h13a2 2 0 0 0-13 0z"/>
-    </svg>
+    <div class="search-bar">
+      <input type="text" placeholder="Поиск..." />
+    </div>
+    <div class="profile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg></div>
   </header>
 
   <nav class="side-menu" id="side-menu">
@@ -203,10 +207,10 @@
   <h1>Music Up</h1>
 
   <div class="genre-menu">
-    <a href="#" class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
-    <a href="#" class="genre-button" onclick="showGenre('rap')">🎤 Рэп</a>
-    <a href="#" class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</a>
-    <a href="#" class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</a>
+    <div class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</div>
+    <div class="genre-button" onclick="showGenre('rap')">🎤 Рэп</div>
+    <div class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</div>
+    <div class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</div>
   </div>
 
   <div class="track-list" id="new-releases">
@@ -215,31 +219,24 @@
       <button onclick="playTrack('https://media.vocaroo.com/mp3/16ker4KT1gn3', 'Мот — День и ночь', 'https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg')">▶️</button>
     </div>
   </div>
-
   <div class="track-list" id="genre-tracks"></div>
 
   <div id="player-bar" style="display:none;">
     <div id="player-info">
-      <img src="" id="track-img" alt="Обложка" />
+      <img id="track-img" src="" alt="Обложка">
       <div id="track-name">Трек</div>
     </div>
     <div id="player-controls">
       <button onclick="togglePlayPause()" aria-label="Play/Pause">
-        <svg id="play-icon" viewBox="0 0 24 24">
-          <polygon points="5 3 19 12 5 21 5 3" />
-        </svg>
+        <svg id="play-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       </button>
       <button onclick="playNext()" aria-label="Next">
-        <svg viewBox="0 0 24 24">
-          <polygon points="5 4 15 12 5 20 5 4" />
-          <line x1="19" y1="4" x2="19" y2="20" />
-        </svg>
+        <svg viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="4" x2="19" y2="20"/></svg>
       </button>
     </div>
   </div>
 
   <audio id="player" hidden></audio>
-
   <script>
     const player = document.getElementById("player");
     const playerBar = document.getElementById("player-bar");
@@ -247,13 +244,11 @@
     const trackImg = document.getElementById("track-img");
     const playIcon = document.getElementById("play-icon");
     const sideMenu = document.getElementById("side-menu");
-
     const playlist = [
       { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
       { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
       { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" }
     ];
-
     let currentTrackIndex = 0;
 
     function playTrack(url, name, img) {
@@ -303,28 +298,19 @@
       document.getElementById("genre-tracks").innerHTML = "";
     }
 
+    const genres = { hiphop: playlist, rap: [], jazz: [], lofi: [] };
     function showGenre(genre) {
-      const container = document.getElementById("genre-tracks");
       document.getElementById("new-releases").style.display = "none";
-      container.innerHTML = "";
-      const songs = genres[genre] || [];
-      songs.forEach(track => {
-        const div = document.createElement("div");
-        div.className = "track";
-        div.innerHTML = `
-          <span class="track-title">${track.title}</span>
-          <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}')">▶️</button>
-        `;
+      const container = document.getElementById("genre-tracks");
+      container.innerHTML = '';
+      genres[genre].forEach(track => {
+        const div = document.createElement('div');
+        div.className = 'track';
+        div.innerHTML = `<span class="track-title">${track.title}</span>
+          <button onclick="playTrack('${track.url}','${track.title}','${track.img}')">▶️</button>`;
         container.appendChild(div);
       });
     }
-
-    const genres = {
-      hiphop: playlist,
-      rap: [],
-      jazz: [],
-      lofi: []
-    };
 
     player.addEventListener('ended', playNext);
   </script>
