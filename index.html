@@ -4,132 +4,141 @@
   <meta charset="UTF-8" />
   <title>Music Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      padding-bottom: 120px;
+      background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+      color: #333;
+      padding-bottom: 100px;
       min-height: 100vh;
     }
-
-    /* Слайд анимация */
-    .slide-left {
-      animation: slideLeft 0.3s ease forwards;
-    }
-    .slide-right {
-      animation: slideRight 0.3s ease forwards;
-    }
-    @keyframes slideLeft {
-      0% { transform: translateX(0); opacity: 1; }
-      100% { transform: translateX(-100%); opacity: 0; }
-    }
-    @keyframes slideRight {
-      0% { transform: translateX(0); opacity: 1; }
-      100% { transform: translateX(100%); opacity: 0; }
-    }
-
-    header, .menu-icon, .profile-icon, .search-bar input, nav.side-menu, h1,
-    .genre-menu, .genre-button, .track, #player-bar, #player-controls button, #player-controls svg {
-      transition: all 0.3s ease;
-    }
-
     header {
-      background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 20px; position: sticky; top: 0; z-index: 100;
+      background: #ffffffcc;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     .menu-icon, .profile-icon {
-      width: 30px; height: 30px; cursor: pointer; stroke: #40e0d0;
-      background: rgba(0,0,0,0.4); border-radius: 50%; padding: 6px;
-      box-shadow: 0 0 12px #40e0d0;
-    }
-    .menu-icon:hover, .profile-icon:hover {
-      background: rgba(64,224,208,0.2); box-shadow: 0 0 16px #40e0d0;
+      width: 32px; height: 32px; cursor: pointer;
     }
     .menu-icon svg, .profile-icon svg {
-      width: 100%; height: 100%; stroke-width: 2.5;
+      width: 100%; height: 100%; stroke: #444; stroke-width: 2;
     }
-    .search-bar { flex: 1; text-align: center; }
     .search-bar input {
-      padding: 8px 15px; width: 70%; max-width: 300px;
-      border-radius: 20px; border: none; font-size: 14px; outline: none;
+      padding: 8px 14px;
+      width: 70%; max-width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      font-size: 14px;
     }
-
     nav.side-menu {
       position: fixed; top: 0; left: -230px; width: 200px; height: 100%;
-      background-color: rgba(0, 0, 0, 0.95); padding: 60px 20px;
+      background-color: #f8f8f8; padding: 60px 20px;
       display: flex; flex-direction: column; gap: 15px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      transition: left 0.3s ease;
       z-index: 1000;
     }
     nav.side-menu.open { left: 0; }
     nav.side-menu a {
-      color: #ccc; text-decoration: none; font-size: 16px;
+      color: #333; text-decoration: none; font-size: 16px;
     }
-    nav.side-menu a:hover { color: #40e0d0; }
-
+    nav.side-menu a:hover { color: #007bff; }
     h1 {
-      text-align: center; color: #40e0d0; margin: 20px 0; font-size: 34px;
-      text-shadow: 0 0 12px #40e0d0, 0 0 24px #1db954;
+      text-align: center;
+      font-size: 30px;
+      margin: 20px;
+      color: #007bff;
     }
-
     .genre-menu {
       display: flex; overflow-x: auto; white-space: nowrap;
-      gap: 10px; padding: 10px; background-color: rgba(0,0,0,0.3);
-      box-shadow: inset 0 0 14px rgba(64,224,208,0.3);
+      gap: 10px; padding: 10px 15px;
     }
-
     .genre-button {
-      padding: 8px 16px; background: transparent; color: #40e0d0;
-      border: 1px solid #40e0d0; border-radius: 20px;
-      box-shadow: 0 0 10px #40e0d0; cursor: pointer;
+      padding: 8px 16px;
+      background: #fff; border: 1px solid #007bff;
+      border-radius: 20px; color: #007bff;
+      cursor: pointer; white-space: nowrap;
     }
-    .genre-button:hover {
-      background: rgba(64,224,208,0.1);
-      box-shadow: 0 0 14px #40e0d0;
+    .track-list {
+      padding: 20px;
     }
-
-    .track-list { padding: 20px; }
     .track {
-      background-color: rgba(0,0,0,0.4); border-radius: 10px;
-      padding: 12px; margin-bottom: 10px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
       display: flex; justify-content: space-between; align-items: center;
-      box-shadow: 0 0 12px rgba(64,224,208,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-
-    .track-title { font-size: 15px; }
+    .track-title { font-size: 15px; color: #333; }
     .track button {
-      background: transparent; border: none; color: #40e0d0;
-      font-size: 22px; cursor: pointer;
+      background: transparent; border: none;
+      cursor: pointer;
+      font-size: 22px;
+      color: #007bff;
     }
-    .track button:hover { color: #1db954; }
+    .track button:hover {
+      color: #0056b3;
+    }
 
     #player-bar {
-      position: fixed; bottom: 0; left: 0; width: 100%;
-      background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
-      display: none; align-items: center; justify-content: center;
-      padding: 10px 20px; box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
       z-index: 1001;
-      border-top-left-radius: 16px;
-      border-top-right-radius: 16px;
     }
 
-    #player-slide {
-      display: flex; align-items: center; gap: 20px;
-      width: 100%; max-width: 600px;
+    #player-bar.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
     }
 
-    #player-info { display: flex; align-items: center; flex: 1; }
+    #player-info {
+      display: flex; align-items: center;
+    }
+
     #player-info img {
-      height: 50px; border-radius: 5px; margin-right: 10px;
-      box-shadow: 0 0 10px rgba(64,224,208,0.4);
+      height: 40px;
+      width: 40px;
+      border-radius: 10px;
+      margin-right: 10px;
     }
 
-    #player-controls { display: flex; align-items: center; gap: 20px; }
-    #player-controls button {
-      background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;
+    #player-controls {
+      display: flex; gap: 15px;
+      align-items: center;
     }
-    #player-controls button:hover { color: #40e0d0; }
+
+    .control-icon {
+      width: 24px;
+      height: 24px;
+      stroke: #007bff;
+      stroke-width: 2;
+      fill: none;
+      cursor: pointer;
+    }
+
+    .control-icon:hover {
+      stroke: #0056b3;
+    }
   </style>
 </head>
 <body onclick="closeMenu(event)">
@@ -137,8 +146,12 @@
     <div class="menu-icon" onclick="toggleMenu()">
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </div>
-    <div class="search-bar"><input type="text" placeholder="Поиск..." /></div>
-    <div class="profile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg></div>
+    <div class="search-bar">
+      <input type="text" placeholder="Поиск..." />
+    </div>
+    <div class="profile-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg>
+    </div>
   </header>
 
   <nav class="side-menu" id="side-menu">
@@ -164,25 +177,27 @@
   <div class="track-list" id="genre-tracks"></div>
 
   <div id="player-bar">
-    <div id="player-slide">
-      <div id="player-info">
-        <img id="track-img" src="" alt="Обложка">
-        <div id="track-name">Трек</div>
-      </div>
-      <div id="player-controls">
-        <button onclick="togglePlayPause()">⏯️</button>
-      </div>
+    <div id="player-info">
+      <img id="track-img" src="" alt="Обложка">
+      <div id="track-name">Трек</div>
+    </div>
+    <div id="player-controls">
+      <svg class="control-icon" onclick="prevTrack()" viewBox="0 0 24 24"><polygon points="11 19 2 12 11 5 11 19"/><line x1="22" y1="19" x2="22" y2="5"/></svg>
+      <svg class="control-icon" id="play-icon" onclick="togglePlayPause()" viewBox="0 0 24 24">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+      <svg class="control-icon" onclick="nextTrack()" viewBox="0 0 24 24"><polygon points="13 5 22 12 13 19 13 5"/><line x1="2" y1="5" x2="2" y2="19"/></svg>
     </div>
   </div>
 
   <audio id="player"></audio>
   <script>
-    const player = document.getElementById("player"),
-          playerBar = document.getElementById("player-bar"),
-          trackName = document.getElementById("track-name"),
-          trackImg = document.getElementById("track-img"),
-          playerSlide = document.getElementById("player-slide"),
-          sideMenu = document.getElementById("side-menu");
+    const player = document.getElementById("player");
+    const playerBar = document.getElementById("player-bar");
+    const trackName = document.getElementById("track-name");
+    const trackImg = document.getElementById("track-img");
+    const playIcon = document.getElementById("play-icon");
+    const sideMenu = document.getElementById("side-menu");
 
     const playlist = [
       { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
@@ -194,16 +209,29 @@
     let currentTrackIndex = 0;
 
     function playTrack(url, name, img) {
-      trackName.textContent = name;
-      trackImg.src = img;
       player.src = url;
       player.play();
-      playerBar.style.display = "flex";
+      playerBar.classList.add("visible");
+      trackName.textContent = name;
+      trackImg.src = img;
+      currentTrackIndex = playlist.findIndex(t => t.url === url);
+      updatePlayPauseIcon(true);
     }
 
     function togglePlayPause() {
-      if (player.paused) player.play();
-      else player.pause();
+      if (player.paused) {
+        player.play();
+        updatePlayPauseIcon(true);
+      } else {
+        player.pause();
+        updatePlayPauseIcon(false);
+      }
+    }
+
+    function updatePlayPauseIcon(isPlaying) {
+      playIcon.innerHTML = isPlaying
+        ? '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
+        : '<polygon points="5 3 19 12 5 21 5 3"/>';
     }
 
     function toggleMenu() {
@@ -237,48 +265,33 @@
         const div = document.createElement('div');
         div.className = 'track';
         div.innerHTML = `<span class="track-title">${track.title}</span>
-          <button onclick="slideToTrack('${track.url}','${track.title}','${track.img}')">▶️</button>`;
+          <button onclick="playTrack('${track.url}','${track.title}','${track.img}')">▶️</button>`;
         container.appendChild(div);
       });
     }
 
-    player.addEventListener('ended', () => {
-      nextTrack();
-    });
-
-    // Свайп
-    let touchStartX = 0;
-    playerBar.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
-    playerBar.addEventListener("touchend", e => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      if (dx < -50) nextTrack(true);
-      else if (dx > 50) prevTrack(true);
-    });
-
-    function slideToTrack(url, name, img, direction = "left") {
-      const animClass = direction === "left" ? "slide-left" : "slide-right";
-      playerSlide.classList.add(animClass);
-      setTimeout(() => {
-        playerSlide.classList.remove(animClass);
-        playTrack(url, name, img);
-      }, 300);
-    }
-
-    function nextTrack(animated = false) {
+    function nextTrack() {
       currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
       const t = playlist[currentTrackIndex];
-      if (animated) slideToTrack(t.url, t.title, t.img, "left");
-      else playTrack(t.url, t.title, t.img);
+      playTrack(t.url, t.title, t.img);
     }
 
-    function prevTrack(animated = false) {
+    function prevTrack() {
       currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
       const t = playlist[currentTrackIndex];
-      if (animated) slideToTrack(t.url, t.title, t.img, "right");
-      else playTrack(t.url, t.title, t.img);
+      playTrack(t.url, t.title, t.img);
     }
 
-    showGenre("hiphop");
+    // свайп
+    let startX = 0;
+    playerBar.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+    playerBar.addEventListener("touchend", e => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (dx > 50) prevTrack();
+      else if (dx < -50) nextTrack();
+    });
+
+    showGenre('hiphop');
   </script>
 </body>
 </html>
