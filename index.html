@@ -10,7 +10,6 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #000;
       color: #fff;
-      overflow-x: hidden;
     }
 
     header {
@@ -43,102 +42,41 @@
       font-size: 14px;
     }
 
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 25px;
-      background-color: #111;
-      padding: 10px 0;
-    }
-
-    nav a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 16px;
-    }
-
-    nav a:hover { color: #40e0d0; }
-
     h1 {
       text-align: center;
       color: #40e0d0;
       margin: 20px 0;
-      font-size: 32px;
+      font-size: 28px;
     }
 
-    .genres-section {
-      padding: 20px;
-    }
-
-    .genre-title {
-      font-size: 26px;
-      text-align: center;
-      margin: 40px 0 20px;
-      padding: 10px 20px;
-      background: linear-gradient(90deg, #40e0d0, #1db954);
-      border-radius: 30px;
-      color: #fff;
-      display: inline-block;
-      width: fit-content;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 0 10px #1db95488;
-    }
-
-    .playlist {
+    /* Горизонтальное меню жанров */
+    .genre-menu {
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      padding: 10px 0;
-    }
-
-    .card {
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
+      overflow-x: auto;
+      white-space: nowrap;
+      background-color: #111;
       padding: 10px;
-      width: 160px;
-      text-align: center;
+      gap: 10px;
+      scrollbar-width: none;
     }
 
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      height: 160px;
-      object-fit: cover;
-    }
-
-    .title {
-      margin-top: 8px;
-      font-weight: bold;
-    }
-
-    .artist {
-      font-size: 14px;
-      color: #aaa;
-      margin: 5px 0;
-    }
-
-    .play-btn {
-      background-color: #1db954;
-      border: none;
-      padding: 6px 15px;
-      border-radius: 20px;
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .play-btn:hover { background-color: #1ed760; }
-
-    audio {
-      width: 100%;
-      margin-top: 20px;
-    }
-
-    .hidden {
+    .genre-menu::-webkit-scrollbar {
       display: none;
+    }
+
+    .genre-button {
+      flex: 0 0 auto;
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #40e0d0, #1db954);
+      color: #fff;
+      font-size: 14px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .genre-button:hover {
+      background: linear-gradient(90deg, #1db954, #40e0d0);
     }
   </style>
 </head>
@@ -150,7 +88,7 @@
       <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>
     </div>
     <div class="search-bar">
-      <input type="text" placeholder="Поиск..." oninput="searchSongs(this.value)" />
+      <input type="text" placeholder="Поиск..." />
     </div>
     <div class="icon">
       <!-- Профиль -->
@@ -158,98 +96,26 @@
     </div>
   </header>
 
-  <nav id="menu">
-    <a href="#pop">🎤 Поп</a>
-    <a href="#rock">🎸 Рок</a>
-    <a href="#hiphop">🎧 Хип-хоп</a>
-    <a href="#lofi">🌙 Lo-fi</a>
-    <a href="#jazz">🎷 Джаз</a>
-  </nav>
-
   <h1>Music Up</h1>
 
-  <div class="genres-section">
-
-    <!-- Поп -->
-    <div id="pop" class="genre-title">🎤 Поп</div>
-    <div class="playlist">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=400&q=80" alt="Поп">
-        <div class="title">Поп Хит</div>
-        <div class="artist">Поп музыка</div>
-        <button class="play-btn">▶️ Играть</button>
-      </div>
-    </div>
-
-    <!-- Рок -->
-    <div id="rock" class="genre-title">🎸 Рок</div>
-    <div class="playlist">
-      <div class="card">
-        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" alt="Рок">
-        <div class="title">Рок Хит</div>
-        <div class="artist">Рок Группа</div>
-        <button class="play-btn">▶️ Играть</button>
-      </div>
-    </div>
-
-    <!-- Хип-хоп -->
-    <div id="hiphop" class="genre-title">🎧 Хип-хоп / Рэп</div>
-    <div class="playlist">
-      <div class="card">
-        <img src="https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1968.jpeg" alt="Хип-хоп">
-        <div class="title">Трек Хип-хоп</div>
-        <div class="artist">Hip-Hop Artist</div>
-        <button class="play-btn">▶️ Играть</button>
-      </div>
-    </div>
-
-    <!-- Lo-fi -->
-    <div id="lofi" class="genre-title">🌙 Lo-fi</div>
-    <div class="playlist">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=400&q=80" alt="Lo-fi">
-        <div class="title">Lo-fi Chill</div>
-        <div class="artist">Lo-fi Beats</div>
-        <button class="play-btn">▶️ Играть</button>
-      </div>
-    </div>
-
-    <!-- Джаз -->
-    <div id="jazz" class="genre-title">🎷 Джаз</div>
-    <div class="playlist">
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1525286116112-b59af11adad1?auto=format&fit=crop&w=400&q=80" alt="Джаз">
-        <div class="title">Smooth Jazz</div>
-        <div class="artist">Jazz Band</div>
-        <button class="play-btn">▶️ Играть</button>
-      </div>
-    </div>
-
+  <!-- Горизонтальное меню жанров -->
+  <div class="genre-menu">
+    <a href="#pop" class="genre-button">🎤 Поп</a>
+    <a href="#rock" class="genre-button">🎸 Рок</a>
+    <a href="#hiphop" class="genre-button">🎧 Хип-хоп</a>
+    <a href="#lofi" class="genre-button">🌙 Lo-fi</a>
+    <a href="#jazz" class="genre-button">🎷 Джаз</a>
+    <a href="#macan" class="genre-button">🔥 Macan</a>
+    <a href="#dance" class="genre-button">💃 Танцы</a>
+    <a href="#edm" class="genre-button">🎛 EDM</a>
+    <a href="#chill" class="genre-button">🧘 Chill</a>
+    <!-- добавляй свои жанры -->
   </div>
 
-  <audio id="player" controls></audio>
-
   <script>
-    const player = document.getElementById('player');
-
-    function playSong(url) {
-      player.pause();
-      player.src = url;
-      player.play();
-    }
-
-    function searchSongs(query) {
-      query = query.toLowerCase();
-      document.querySelectorAll('.card').forEach(card => {
-        const t = card.querySelector('.title')?.textContent.toLowerCase() || '';
-        const a = card.querySelector('.artist')?.textContent.toLowerCase() || '';
-        card.style.display = (t.includes(query) || a.includes(query)) ? 'block' : 'none';
-      });
-    }
-
     function toggleMenu() {
-      const menu = document.getElementById('menu');
-      menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+      // Можешь добавить мобильное меню, если хочешь
+      alert("Меню нажато (сюда можно вставить открытие меню)");
     }
   </script>
 
