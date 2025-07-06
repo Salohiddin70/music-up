@@ -2,44 +2,85 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Music Up — Makkan Playlist</title>
+  <title>Music Up — Macan Playlist</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #000, #40e0d0);
-      font-family: 'Segoe UI', sans-serif;
-      color: #fff;
-      text-align: center;
     }
-    h1 {
-      margin-top: 30px;
+    body {
+      display: flex;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
+    aside {
+      width: 220px;
+      background-color: #111;
+      padding: 20px;
+    }
+    aside h2 {
       color: #40e0d0;
+      margin-bottom: 20px;
+    }
+    aside nav a {
+      display: block;
+      color: #ccc;
+      text-decoration: none;
+      padding: 10px 0;
+      font-size: 15px;
+    }
+    aside nav a:hover {
+      color: #40e0d0;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .search {
+      margin-bottom: 20px;
+    }
+    .search input {
+      padding: 10px;
+      width: 100%;
+      max-width: 400px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      font-size: 16px;
+    }
+
+    h1 {
+      color: #40e0d0;
+      margin-bottom: 20px;
     }
     .playlist {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
+      flex-wrap: wrap;
+      gap: 20px;
     }
     .card {
       background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 15px;
-      padding: 20px;
-      margin: 15px;
-      width: 90%;
-      max-width: 320px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      padding: 15px;
+      width: 250px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      text-align: center;
     }
     .cover {
       width: 100%;
       border-radius: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
     .title {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: bold;
     }
     .artist {
       font-size: 14px;
@@ -59,49 +100,88 @@
       background-color: #1ed760;
     }
     audio {
-      width: 90%;
-      margin-top: 30px;
+      width: 100%;
+      margin-top: 20px;
+      display: block;
     }
-    @media (max-width: 600px) {
-      .cover {
-        width: 200px;
-        height: 200px;
+
+    @media (max-width: 768px) {
+      aside {
+        display: none;
       }
-      h1 {
-        font-size: 24px;
+      main {
+        padding: 10px;
+      }
+      .card {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <h1>🎶 Music Up — Makkan Playlist</h1>
-  <div class="playlist">
-    <div class="card">
-      <img class="cover" src="https://i.imgur.com/93uHErb.jpeg" alt="Май">
-      <div class="title">Май</div>
-      <div class="artist">Макан</div>
-      <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/292d19b1f2b989f1c46d393c204a4eb3/Makan_-_Maj.mp3')">▶️ Играть</button>
+  <aside>
+    <h2>Music Up</h2>
+    <nav>
+      <a href="#">🏠 Home</a>
+      <a href="#">🎶 Macan Playlist</a>
+      <a href="#">🔍 Search</a>
+      <a href="#">🎧 Your Library</a>
+      <a href="#">❤️ Liked Songs</a>
+      <a href="#">👤 Profile</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="search">
+      <input type="text" placeholder="Поиск..." oninput="searchSongs(this.value)" />
     </div>
-    <div class="card">
-      <img class="cover" src="https://i.imgur.com/0YrLbdn.jpeg" alt="Патроны">
-      <div class="title">Патроны</div>
-      <div class="artist">Макан</div>
-      <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/34250a23358ed9e520bb0d79c5f3e401/Makan_-_Patrony.mp3')">▶️ Играть</button>
+
+    <h1>🎵 Macan Playlist</h1>
+    <div class="playlist" id="playlist">
+      <div class="card" data-title="Май" data-artist="Macan">
+        <img class="cover" src="https://i.imgur.com/93uHErb.jpeg" alt="Май">
+        <div class="title">Май</div>
+        <div class="artist">Macan</div>
+        <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/292d19b1f2b989f1c46d393c204a4eb3/Makan_-_Maj.mp3')">▶️ Играть</button>
+      </div>
+      <div class="card" data-title="Патроны" data-artist="Macan">
+        <img class="cover" src="https://i.imgur.com/0YrLbdn.jpeg" alt="Патроны">
+        <div class="title">Патроны</div>
+        <div class="artist">Macan</div>
+        <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/34250a23358ed9e520bb0d79c5f3e401/Makan_-_Patrony.mp3')">▶️ Играть</button>
+      </div>
+      <div class="card" data-title="Районы" data-artist="Macan">
+        <img class="cover" src="https://i.imgur.com/kVKMCKr.jpeg" alt="Районы">
+        <div class="title">Районы</div>
+        <div class="artist">Macan</div>
+        <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/89a11fdd44f0eec8f2d7d1e3f2392a5f/Makan_-_Rajony.mp3')">▶️ Играть</button>
+      </div>
     </div>
-    <div class="card">
-      <img class="cover" src="https://i.imgur.com/kVKMCKr.jpeg" alt="Районы">
-      <div class="title">Районы</div>
-      <div class="artist">Макан</div>
-      <button class="play-btn" onclick="playSong('https://muz16.zvukoff.cc/dl/stream/89a11fdd44f0eec8f2d7d1e3f2392a5f/Makan_-_Rajony.mp3')">▶️ Играть</button>
-    </div>
-  </div>
-  <audio id="player" controls style="display:none"></audio>
+    <audio id="player" controls></audio>
+  </main>
+
   <script>
+    const player = document.getElementById('player');
+
     function playSong(url) {
-      const player = document.getElementById('player');
+      player.pause();
       player.src = url;
-      player.style.display = 'block';
       player.play();
+    }
+
+    function searchSongs(query) {
+      const cards = document.querySelectorAll('.card');
+      query = query.toLowerCase();
+
+      cards.forEach(card => {
+        const title = card.dataset.title.toLowerCase();
+        const artist = card.dataset.artist.toLowerCase();
+        if (title.includes(query) || artist.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
   </script>
 </body>
