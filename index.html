@@ -10,7 +10,7 @@
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #fff;
-      padding-bottom: 120px; /* место под нижний плеер */
+      padding-bottom: 120px;
       min-height: 100vh;
     }
 
@@ -30,6 +30,15 @@
       height: 28px;
       cursor: pointer;
       fill: #40e0d0;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 50%;
+      padding: 6px;
+      box-shadow: 0 0 6px #40e0d0;
+      transition: background 0.3s;
+    }
+
+    .menu-icon:hover, .profile-icon:hover {
+      background-color: rgba(64, 224, 208, 0.2);
     }
 
     .search-bar {
@@ -170,119 +179,115 @@
   </style>
 </head>
 <body onclick="closeMenu(event)">
+  <header>
+    <svg class="menu-icon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M3 6h18M3 12h18M3 18h18"/>
+    </svg>
+    <div class="search-bar">
+      <input type="text" placeholder="Поиск..." oninput="searchTracks(this.value)" />
+    </div>
+    <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+    </svg>
+  </header>
 
-<header>
-  <svg class="menu-icon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <path d="M3 6h18M3 12h18M3 18h18"/>
-  </svg>
-  <div class="search-bar">
-    <input type="text" placeholder="Поиск..." oninput="searchTracks(this.value)" />
+  <nav class="side-menu" id="side-menu">
+    <a href="#" onclick="goHome()">🏠 Главная</a>
+    <a href="#">📚 Библиотека</a>
+    <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
+    <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
+    <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
+    <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
+  </nav>
+
+  <h1>Music Up</h1>
+
+  <div class="genre-menu">
+    <a href="#" class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
+    <a href="#" class="genre-button" onclick="showGenre('rap')">🎤 Рэп</a>
+    <a href="#" class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</a>
+    <a href="#" class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</a>
   </div>
-  <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-  </svg>
-</header>
 
-<nav class="side-menu" id="side-menu">
-  <a href="#" onclick="goHome()">🏠 Главная</a>
-  <a href="#">📚 Библиотека</a>
-  <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
-  <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
-  <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
-  <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
-</nav>
-
-<h1>Music Up</h1>
-
-<div class="genre-menu">
-  <a href="#" class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
-  <a href="#" class="genre-button" onclick="showGenre('rap')">🎤 Рэп</a>
-  <a href="#" class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</a>
-  <a href="#" class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</a>
-</div>
-
-<div class="track-list" id="new-releases">
-  <div class="track">
-    <span class="track-title">Мот — День и ночь</span>
-    <button onclick="playTrack('https://voca.ro/16ker4KT1gn3', 'День и ночь', 'https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg')">▶️</button>
+  <div class="track-list" id="new-releases">
+    <div class="track">
+      <span class="track-title">Мот — День и ночь</span>
+      <button onclick="playTrack('https://media.vocaroo.com/mp3/16ker4KT1gn3', 'Мот — День и ночь', 'https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg')">▶️</button>
+    </div>
   </div>
-</div>
 
-<div class="track-list" id="genre-tracks"></div>
+  <div class="track-list" id="genre-tracks"></div>
 
-<!-- Нижний плеер -->
-<div id="player-bar" style="display:none;">
-  <div id="player-info">
-    <img src="" id="track-img" alt="Обложка">
-    <div id="track-name">Трек</div>
+  <div id="player-bar" style="display:none;">
+    <div id="player-info">
+      <img src="" id="track-img" alt="Обложка">
+      <div id="track-name">Трек</div>
+    </div>
+    <div id="player-controls">
+      <button onclick="player.pause()">⏸️</button>
+      <button onclick="player.play()">▶️</button>
+    </div>
   </div>
-  <div id="player-controls">
-    <button onclick="player.pause()">⏸️</button>
-    <button onclick="player.play()">▶️</button>
-  </div>
-</div>
 
-<audio id="player" hidden></audio>
+  <audio id="player" hidden></audio>
 
-<script>
-  const player = document.getElementById("player");
-  const playerBar = document.getElementById("player-bar");
-  const trackName = document.getElementById("track-name");
-  const trackImg = document.getElementById("track-img");
+  <script>
+    const player = document.getElementById("player");
+    const playerBar = document.getElementById("player-bar");
+    const trackName = document.getElementById("track-name");
+    const trackImg = document.getElementById("track-img");
+    const sideMenu = document.getElementById("side-menu");
 
-  const sideMenu = document.getElementById("side-menu");
-
-  function playTrack(url, name, img) {
-    player.src = url;
-    player.play();
-    playerBar.style.display = "flex";
-    trackName.textContent = name;
-    trackImg.src = img;
-  }
-
-  function toggleMenu() {
-    sideMenu.classList.toggle("open");
-  }
-
-  function closeMenu(e) {
-    if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
-      sideMenu.classList.remove("open");
+    function playTrack(url, name, img) {
+      player.src = url;
+      player.play();
+      playerBar.style.display = "flex";
+      trackName.textContent = name;
+      trackImg.src = img;
     }
-  }
 
-  function goHome() {
-    document.getElementById("new-releases").style.display = "block";
-    document.getElementById("genre-tracks").innerHTML = "";
-  }
+    function toggleMenu() {
+      sideMenu.classList.toggle("open");
+    }
 
-  function showGenre(genre) {
-    document.getElementById("new-releases").style.display = "none";
-    const container = document.getElementById("genre-tracks");
-    container.innerHTML = "";
+    function closeMenu(e) {
+      if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
+        sideMenu.classList.remove("open");
+      }
+    }
 
-    const songs = genres[genre] || [];
-    songs.forEach(track => {
-      const div = document.createElement("div");
-      div.className = "track";
-      div.innerHTML = `
-        <span class="track-title">${track.title}</span>
-        <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}')">▶️</button>
-      `;
-      container.appendChild(div);
-    });
-  }
+    function goHome() {
+      document.getElementById("new-releases").style.display = "block";
+      document.getElementById("genre-tracks").innerHTML = "";
+    }
 
-  const genres = {
-    hiphop: [
-      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-      { title: "Мот — День и ночь", url: "https://voca.ro/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" }
-    ],
-    rap: [],
-    jazz: [],
-    lofi: []
-  };
-</script>
+    function showGenre(genre) {
+      document.getElementById("new-releases").style.display = "none";
+      const container = document.getElementById("genre-tracks");
+      container.innerHTML = "";
+      const songs = genres[genre] || [];
+      songs.forEach(track => {
+        const div = document.createElement("div");
+        div.className = "track";
+        div.innerHTML = `
+          <span class="track-title">${track.title}</span>
+          <button onclick="playTrack('${track.url}', '${track.title}', '${track.img}')">▶️</button>
+        `;
+        container.appendChild(div);
+      });
+    }
 
+    const genres = {
+      hiphop: [
+        { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+        { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+        { title: "Macan — Останься образом", url: "https://media.vocaroo.com/mp3/1fNWBhahQ6Mo", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+        { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" }
+      ],
+      rap: [],
+      jazz: [],
+      lofi: []
+    };
+  </script>
 </body>
 </html>
