@@ -5,67 +5,16 @@
   <title>Music Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Segoe UI', sans-serif;
+      background: url('heart_starry_background.png') no-repeat center center fixed;
+      background-size: cover;
       color: #fff;
       min-height: 100vh;
-      background: #000;
+      padding-bottom: 100px;
       overflow-x: hidden;
-    }
-
-    /* ФОН: сердце и линии */
-    .background {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      z-index: -1;
-    }
-
-    .heart {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 200px; height: 180px;
-      background: transparent;
-    }
-
-    .dot {
-      position: absolute;
-      width: 2px; height: 2px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.8;
-      animation: twinkle 2s infinite;
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
-    }
-
-    .line {
-      position: absolute;
-      width: 2px;
-      height: 100px;
-      background: white;
-      opacity: 0.3;
-      box-shadow: 0 0 12px white;
-      animation: moveLine 5s linear infinite;
-    }
-
-    @keyframes moveLine {
-      0% {
-        transform: translate(var(--x, 0vw), var(--y, 0vh)) rotate(45deg);
-        opacity: 0;
-      }
-      50% { opacity: 1; }
-      100% {
-        transform: translate(50vw, 50vh) rotate(45deg);
-        opacity: 0;
-      }
     }
 
     header {
@@ -76,7 +25,7 @@
       align-items: center;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
     }
 
     .menu-icon, .profile-icon {
@@ -107,7 +56,8 @@
 
     nav.side-menu {
       position: fixed;
-      top: 0; left: -230px;
+      top: 0;
+      left: -230px;
       width: 200px;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.95);
@@ -119,7 +69,9 @@
       z-index: 1000;
     }
 
-    nav.side-menu.open { left: 0; }
+    nav.side-menu.open {
+      left: 0;
+    }
 
     nav.side-menu a {
       color: #ccc;
@@ -127,7 +79,9 @@
       font-size: 16px;
     }
 
-    nav.side-menu a:hover { color: #40e0d0; }
+    nav.side-menu a:hover {
+      color: #40e0d0;
+    }
 
     h1 {
       text-align: center;
@@ -144,7 +98,6 @@
       gap: 10px;
       padding: 10px;
       background-color: rgba(0,0,0,0.3);
-      z-index: 2;
     }
 
     .genre-button {
@@ -159,7 +112,6 @@
 
     .track-list {
       padding: 20px;
-      z-index: 2;
     }
 
     .track {
@@ -223,6 +175,11 @@
       transition: transform 0.4s ease;
     }
 
+    #player-info {
+      display: flex;
+      align-items: center;
+    }
+
     #track-img {
       height: 50px;
       width: 50px;
@@ -256,11 +213,6 @@
   </style>
 </head>
 <body onclick="closeMenu(event)">
-  <div class="background">
-    <div class="heart" id="heart"></div>
-    <!-- Линии добавляются через JavaScript -->
-  </div>
-
   <header>
     <div class="menu-icon" onclick="toggleMenu()">
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -311,16 +263,20 @@
   <audio id="player"></audio>
 
   <script>
-    // Плеер
     const player = document.getElementById("player"),
+          playerBar = document.getElementById("player-bar"),
           trackName = document.getElementById("track-name"),
           trackImg = document.getElementById("track-img"),
-          genreTracks = document.getElementById("genre-tracks"),
-          playIcon = document.getElementById("play-icon");
+          sideMenu = document.getElementById("side-menu"),
+          playPauseButton = document.getElementById("play-pause-button"),
+          searchInput = document.getElementById("searchInput"),
+          genreTracks = document.getElementById("genre-tracks");
 
     const playlist = [
       { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg", visible: true },
-      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: true },
+      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false },
+      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false },
+      { title: "Macan — Останься образом", url: "https://voca.ro/1EmoFWHzaRO6", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false }
     ];
 
     let currentTrackIndex = 0;
@@ -343,14 +299,27 @@
     }
 
     function updatePlayPauseIcon() {
-      playIcon.innerHTML = player.paused
-        ? '<polygon points="6,4 20,12 6,20" />'
-        : '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      const icon = document.getElementById("play-icon");
+      if (player.paused) {
+        icon.innerHTML = '<polygon points="6,4 20,12 6,20" />';
+      } else {
+        icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      }
+    }
+
+    function toggleMenu() {
+      sideMenu.classList.toggle("open");
+    }
+
+    function closeMenu(e) {
+      if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
+        sideMenu.classList.remove("open");
+      }
     }
 
     const genres = {
       hiphop: [playlist[0]],
-      rap: [playlist[1]],
+      rap: [],
       jazz: [],
       lofi: [],
       road: []
@@ -359,55 +328,62 @@
     function showGenre(genre) {
       genreTracks.innerHTML = '';
       genres[genre].forEach(track => {
+        if (!track.visible) return;
         const div = document.createElement('div');
         div.className = 'track';
         div.innerHTML = `
           <span class="track-title">${track.title}</span>
           <button class="play-btn" onclick="playTrack('${track.url}','${track.title}','${track.img}')">
-            <svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
           </button>`;
         genreTracks.appendChild(div);
       });
     }
 
+    function filterTracks() {
+      const query = searchInput.value.toLowerCase();
+      genreTracks.innerHTML = '';
+      playlist.forEach(track => {
+        if (track.title.toLowerCase().includes(query)) {
+          const div = document.createElement('div');
+          div.className = 'track';
+          div.innerHTML = `
+            <span class="track-title">${track.title}</span>
+            <button class="play-btn" onclick="playTrack('${track.url}','${track.title}','${track.img}')">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
+            </button>`;
+          genreTracks.appendChild(div);
+        }
+      });
+    }
+
+    player.addEventListener('ended', () => {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      const t = playlist[currentTrackIndex];
+      playTrack(t.url, t.title, t.img);
+    });
+
+    let touchStartX = 0;
+    playerBar.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
+    playerBar.addEventListener("touchend", e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (dx < -40) nextTrack();
+      else if (dx > 40) prevTrack();
+    });
+
+    function nextTrack() {
+      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+      const t = playlist[currentTrackIndex];
+      playTrack(t.url, t.title, t.img);
+    }
+
+    function prevTrack() {
+      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+      const t = playlist[currentTrackIndex];
+      playTrack(t.url, t.title, t.img);
+    }
+
     showGenre('hiphop');
-
-    // Меню
-    const sideMenu = document.getElementById("side-menu");
-    function toggleMenu() { sideMenu.classList.toggle("open"); }
-    function closeMenu(e) {
-      if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
-        sideMenu.classList.remove("open");
-      }
-    }
-
-    // Анимация сердца
-    const heart = document.getElementById("heart");
-    for (let i = 0; i < 200; i++) {
-      const dot = document.createElement('div');
-      dot.className = 'dot';
-      const angle = Math.PI - (i / 100) * 2 * Math.PI;
-      const x = 16 * Math.pow(Math.sin(angle), 3);
-      const y = 13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle);
-      dot.style.left = `${100 + x * 6}px`;
-      dot.style.top = `${90 - y * 6}px`;
-      heart.appendChild(dot);
-    }
-
-    // Линии света
-    const background = document.querySelector(".background");
-    function spawnLine() {
-      const line = document.createElement('div');
-      line.className = 'line';
-      const x = Math.random() * 100 + 'vw';
-      const y = Math.random() * 100 + 'vh';
-      line.style.setProperty('--x', x);
-      line.style.setProperty('--y', y);
-      background.appendChild(line);
-      setTimeout(() => background.removeChild(line), 5000);
-    }
-
-    setInterval(spawnLine, 400);
   </script>
 </body>
 </html>
