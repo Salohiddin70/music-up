@@ -5,70 +5,25 @@
   <title>Music Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Segoe UI', sans-serif;
       color: #fff;
       min-height: 100vh;
-      padding-bottom: 100px;
-      overflow-x: hidden;
-      position: relative;
-      background-color: #000;
-    }
-
-    /* 🌌 Анимированный фон */
-    #background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
       overflow: hidden;
+      position: relative;
     }
 
-    .heart {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 300px;
-      height: 300px;
-      transform: translate(-50%, -50%) scale(1);
-      background: radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 2px);
-      background-size: 8px 8px;
-      opacity: 0.7;
-      mask-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M23.6,0c-3.4,0-6.4,2.1-7.6,5.1C14.8,2.1,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,6.1,6.1,11.1,15.6,20.4c9.5-9.3,15.6-14.3,15.6-20.4 C32,3.8,28.2,0,23.6,0z"/></svg>');
-      mask-size: contain;
-      mask-repeat: no-repeat;
-      mask-position: center;
+    canvas#background-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
     }
 
-    .line {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: repeating-linear-gradient(
-        to right,
-        white 0,
-        white 2px,
-        transparent 2px,
-        transparent 6px
-      );
-      animation: moveLine 3s linear infinite;
-      filter: drop-shadow(0 0 6px white);
-    }
-
-    @keyframes moveLine {
-      from { transform: translateX(-100%); }
-      to { transform: translateX(100%); }
-    }
-
-    /* Остальной стиль сайта */
     header {
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.5);
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
@@ -82,11 +37,11 @@
       width: 30px;
       height: 30px;
       cursor: pointer;
-      stroke: #40e0d0;
-      background: rgba(0,0,0,0.4);
+      stroke: #fff;
+      background: rgba(255,255,255,0.1);
       border-radius: 50%;
       padding: 6px;
-      box-shadow: 0 0 12px #40e0d0;
+      box-shadow: 0 0 12px #fff;
     }
 
     .menu-icon svg, .profile-icon svg {
@@ -129,16 +84,12 @@
       font-size: 16px;
     }
 
-    nav.side-menu a:hover {
-      color: #40e0d0;
-    }
-
     h1 {
       text-align: center;
-      color: #40e0d0;
+      color: #fff;
       margin: 20px 0;
       font-size: 32px;
-      text-shadow: 0 0 12px #40e0d0, 0 0 24px #1db954;
+      text-shadow: 0 0 12px #fff, 0 0 24px #fff;
     }
 
     .genre-menu {
@@ -147,16 +98,15 @@
       white-space: nowrap;
       gap: 10px;
       padding: 10px;
-      background-color: rgba(0,0,0,0.3);
     }
 
     .genre-button {
       padding: 8px 16px;
       background: transparent;
-      color: #40e0d0;
-      border: 1px solid #40e0d0;
+      color: #fff;
+      border: 1px solid #fff;
       border-radius: 20px;
-      box-shadow: 0 0 10px #40e0d0;
+      box-shadow: 0 0 10px #fff;
       cursor: pointer;
     }
 
@@ -165,23 +115,19 @@
     }
 
     .track {
-      background-color: rgba(0,0,0,0.4);
+      background-color: rgba(0,0,0,0.5);
       border-radius: 10px;
       padding: 12px;
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 0 10px rgba(64,224,208,0.2);
-    }
-
-    .track-title {
-      font-size: 15px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
     }
 
     .play-btn {
-      background: rgba(64, 224, 208, 0.1);
-      border: 1px solid #40e0d0;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #fff;
       border-radius: 50%;
       padding: 8px;
       width: 40px;
@@ -190,23 +136,16 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
 
     .play-btn:hover {
-      background-color: #40e0d0;
-      border-color: #1db954;
+      background-color: #fff;
     }
 
     .play-btn svg {
       width: 20px;
       height: 20px;
-      fill: #40e0d0;
-      transition: fill 0.3s ease;
-    }
-
-    .play-btn:hover svg {
-      fill: #000;
+      fill: #fff;
     }
 
     #player-bar {
@@ -220,7 +159,6 @@
       padding: 12px 20px;
       background: rgba(255,255,255,0.08);
       backdrop-filter: blur(16px);
-      box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
       z-index: 1001;
     }
 
@@ -234,7 +172,7 @@
       width: 50px;
       border-radius: 10px;
       margin-right: 12px;
-      box-shadow: 0 0 12px rgba(64,224,208,0.5);
+      box-shadow: 0 0 12px #fff;
     }
 
     #track-name {
@@ -242,33 +180,16 @@
       font-weight: bold;
     }
 
-    #player-controls button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-    }
-
     #player-controls svg {
       width: 36px;
       height: 36px;
-      fill: #40e0d0;
-      transition: fill 0.3s;
-    }
-
-    #player-controls svg:hover {
-      fill: #1db954;
+      fill: #fff;
     }
   </style>
 </head>
 <body onclick="closeMenu(event)">
-  <!-- 🌠 Анимированный фон -->
-  <div id="background">
-    <div class="heart"></div>
-    <div class="line"></div>
-  </div>
+  <canvas id="background-canvas"></canvas>
 
-  <!-- 🔼 Остальная структура сайта -->
   <header>
     <div class="menu-icon" onclick="toggleMenu()">
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -287,17 +208,15 @@
     <a href="#">🎤 Рэп</a>
     <a href="#">🎷 Джаз</a>
     <a href="#">🌙 Lo-fi</a>
-    <a href="#">🛣️ Дорога</a>
   </nav>
 
   <h1>Music Up</h1>
 
   <div class="genre-menu">
-    <div class="genre-button">🎧 Хип-хоп</div>
-    <div class="genre-button">🎤 Рэп</div>
-    <div class="genre-button">🎷 Джаз</div>
-    <div class="genre-button">🌙 Lo-fi</div>
-    <div class="genre-button">🛣️ Дорога</div>
+    <div class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</div>
+    <div class="genre-button" onclick="showGenre('rap')">🎤 Рэп</div>
+    <div class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</div>
+    <div class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</div>
   </div>
 
   <div class="track-list" id="genre-tracks"></div>
@@ -319,28 +238,118 @@
   <audio id="player"></audio>
 
   <script>
-    // Все функции управления (сокращённо)
-    function toggleMenu() {
-      document.getElementById("side-menu").classList.toggle("open");
+    // Музыка
+    const player = document.getElementById("player"),
+          trackName = document.getElementById("track-name"),
+          trackImg = document.getElementById("track-img"),
+          genreTracks = document.getElementById("genre-tracks");
+
+    const playlist = [
+      { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
+      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" }
+    ];
+
+    let currentTrackIndex = 0;
+
+    function playTrack(url, name, img) {
+      player.src = url;
+      player.play();
+      trackName.textContent = name;
+      trackImg.src = img;
+      updatePlayPauseIcon();
     }
-    function closeMenu(e) {
-      if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
-        document.getElementById("side-menu").classList.remove("open");
-      }
-    }
+
     function togglePlayPause() {
-      const player = document.getElementById("player");
       if (player.paused) player.play();
       else player.pause();
       updatePlayPauseIcon();
     }
+
     function updatePlayPauseIcon() {
-      const player = document.getElementById("player");
       const icon = document.getElementById("play-icon");
       icon.innerHTML = player.paused
         ? '<polygon points="6,4 20,12 6,20" />'
         : '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
     }
+
+    function showGenre(genre) {
+      genreTracks.innerHTML = "";
+      playlist.forEach(track => {
+        const div = document.createElement("div");
+        div.className = "track";
+        div.innerHTML = `
+          <span>${track.title}</span>
+          <button class="play-btn" onclick="playTrack('${track.url}','${track.title}','${track.img}')">
+            <svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
+          </button>`;
+        genreTracks.appendChild(div);
+      });
+    }
+
+    showGenre('hiphop');
+
+    // Фон-анимация: точки + линии
+    const canvas = document.getElementById("background-canvas");
+    const ctx = canvas.getContext("2d");
+    let width, height, particles = [];
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    function createParticles() {
+      particles = [];
+      for (let i = 0; i < 100; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 1,
+          vy: (Math.random() - 0.5) * 1,
+          radius: Math.random() * 1.5 + 1
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "#ffffff";
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // линии между частицами
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.strokeStyle = "rgba(255,255,255,0.1)";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    createParticles();
+    draw();
   </script>
 </body>
 </html>
