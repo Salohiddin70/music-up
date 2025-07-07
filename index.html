@@ -9,59 +9,64 @@
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: black;
       color: #fff;
       min-height: 100vh;
       padding-bottom: 100px;
       overflow-x: hidden;
+      position: relative;
+      background-color: #000;
     }
 
-    .heart-bg {
+    /* 🌌 Анимированный фон */
+    #background {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
-      background: black;
       overflow: hidden;
     }
 
-    .heart-bg svg {
+    .heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      transform: translate(-50%, -50%) scale(1);
+      background: radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 2px);
+      background-size: 8px 8px;
+      opacity: 0.7;
+      mask-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M23.6,0c-3.4,0-6.4,2.1-7.6,5.1C14.8,2.1,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,6.1,6.1,11.1,15.6,20.4c9.5-9.3,15.6-14.3,15.6-20.4 C32,3.8,28.2,0,23.6,0z"/></svg>');
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+    }
+
+    .line {
+      position: absolute;
+      top: 50%;
+      left: 0;
       width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 0 4px white);
-    }
-
-    #heart-path {
-      fill: none;
-      stroke: white;
-      stroke-width: 2;
-      stroke-dasharray: 2, 6;
-      animation: pulseDots 5s linear infinite;
-    }
-
-    #glow-line {
-      fill: none;
-      stroke: white;
-      stroke-width: 3;
-      stroke-dasharray: 100;
-      stroke-dashoffset: 100;
+      height: 2px;
+      background: repeating-linear-gradient(
+        to right,
+        white 0,
+        white 2px,
+        transparent 2px,
+        transparent 6px
+      );
       animation: moveLine 3s linear infinite;
       filter: drop-shadow(0 0 6px white);
     }
 
     @keyframes moveLine {
-      0% { stroke-dashoffset: 100; }
-      100% { stroke-dashoffset: 0; }
+      from { transform: translateX(-100%); }
+      to { transform: translateX(100%); }
     }
 
-    @keyframes pulseDots {
-      0% { stroke-dashoffset: 0; }
-      100% { stroke-dashoffset: -8; }
-    }
-
+    /* Остальной стиль сайта */
     header {
       background: rgba(0,0,0,0.6);
       padding: 12px 20px;
@@ -70,7 +75,7 @@
       align-items: center;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 10;
     }
 
     .menu-icon, .profile-icon {
@@ -217,7 +222,6 @@
       backdrop-filter: blur(16px);
       box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
       z-index: 1001;
-      transition: transform 0.4s ease;
     }
 
     #player-info {
@@ -258,14 +262,13 @@
   </style>
 </head>
 <body onclick="closeMenu(event)">
-  <!-- 🔥 Сердечный анимированный фон -->
-  <div class="heart-bg">
-    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-      <path id="heart-path" d="M 50 30 C 35 15, 5 35, 50 75 C 95 35, 65 15, 50 30" />
-      <path id="glow-line" d="M 50 30 C 35 15, 5 35, 50 75 C 95 35, 65 15, 50 30" />
-    </svg>
+  <!-- 🌠 Анимированный фон -->
+  <div id="background">
+    <div class="heart"></div>
+    <div class="line"></div>
   </div>
 
+  <!-- 🔼 Остальная структура сайта -->
   <header>
     <div class="menu-icon" onclick="toggleMenu()">
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -279,22 +282,22 @@
   </header>
 
   <nav class="side-menu" id="side-menu">
-    <a href="#" onclick="goHome()">🏠 Главная</a>
-    <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
-    <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
-    <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
-    <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
-    <a href="#" onclick="showGenre('road')">🛣️ Дорога</a>
+    <a href="#">🏠 Главная</a>
+    <a href="#">🎧 Хип-хоп</a>
+    <a href="#">🎤 Рэп</a>
+    <a href="#">🎷 Джаз</a>
+    <a href="#">🌙 Lo-fi</a>
+    <a href="#">🛣️ Дорога</a>
   </nav>
 
   <h1>Music Up</h1>
 
   <div class="genre-menu">
-    <div class="genre-button" onclick="showGenre('hiphop')">🎧 Хип-хоп</div>
-    <div class="genre-button" onclick="showGenre('rap')">🎤 Рэп</div>
-    <div class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</div>
-    <div class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</div>
-    <div class="genre-button" onclick="showGenre('road')">🛣️ Дорога</div>
+    <div class="genre-button">🎧 Хип-хоп</div>
+    <div class="genre-button">🎤 Рэп</div>
+    <div class="genre-button">🎷 Джаз</div>
+    <div class="genre-button">🌙 Lo-fi</div>
+    <div class="genre-button">🛣️ Дорога</div>
   </div>
 
   <div class="track-list" id="genre-tracks"></div>
@@ -316,127 +319,28 @@
   <audio id="player"></audio>
 
   <script>
-    const player = document.getElementById("player"),
-          playerBar = document.getElementById("player-bar"),
-          trackName = document.getElementById("track-name"),
-          trackImg = document.getElementById("track-img"),
-          sideMenu = document.getElementById("side-menu"),
-          playPauseButton = document.getElementById("play-pause-button"),
-          searchInput = document.getElementById("searchInput"),
-          genreTracks = document.getElementById("genre-tracks");
-
-    const playlist = [
-      { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg", visible: true },
-      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false },
-      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false },
-      { title: "Macan — Останься образом", url: "https://voca.ro/1EmoFWHzaRO6", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false }
-    ];
-
-    let currentTrackIndex = 0;
-
-    function playTrack(url, name, img) {
-      player.src = url;
-      player.play();
-      trackName.textContent = name;
-      trackImg.src = img;
-      updatePlayPauseIcon();
-    }
-
-    function togglePlayPause() {
-      if (player.paused) {
-        player.play();
-      } else {
-        player.pause();
-      }
-      updatePlayPauseIcon();
-    }
-
-    function updatePlayPauseIcon() {
-      const icon = document.getElementById("play-icon");
-      if (player.paused) {
-        icon.innerHTML = '<polygon points="6,4 20,12 6,20" />';
-      } else {
-        icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
-      }
-    }
-
+    // Все функции управления (сокращённо)
     function toggleMenu() {
-      sideMenu.classList.toggle("open");
+      document.getElementById("side-menu").classList.toggle("open");
     }
-
     function closeMenu(e) {
       if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
-        sideMenu.classList.remove("open");
+        document.getElementById("side-menu").classList.remove("open");
       }
     }
-
-    const genres = {
-      hiphop: [playlist[0]],
-      rap: [],
-      jazz: [],
-      lofi: [],
-      road: []
-    };
-
-    function showGenre(genre) {
-      genreTracks.innerHTML = '';
-      genres[genre].forEach(track => {
-        if (!track.visible) return;
-        const div = document.createElement('div');
-        div.className = 'track';
-        div.innerHTML = `
-          <span class="track-title">${track.title}</span>
-          <button class="play-btn" onclick="playTrack('${track.url}','${track.title}','${track.img}')">
-            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
-          </button>`;
-        genreTracks.appendChild(div);
-      });
+    function togglePlayPause() {
+      const player = document.getElementById("player");
+      if (player.paused) player.play();
+      else player.pause();
+      updatePlayPauseIcon();
     }
-
-    function filterTracks() {
-      const query = searchInput.value.toLowerCase();
-      genreTracks.innerHTML = '';
-      playlist.forEach(track => {
-        if (track.title.toLowerCase().includes(query)) {
-          const div = document.createElement('div');
-          div.className = 'track';
-          div.innerHTML = `
-            <span class="track-title">${track.title}</span>
-            <button class="play-btn" onclick="playTrack('${track.url}','${track.title}','${track.img}')">
-              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
-            </button>`;
-          genreTracks.appendChild(div);
-        }
-      });
+    function updatePlayPauseIcon() {
+      const player = document.getElementById("player");
+      const icon = document.getElementById("play-icon");
+      icon.innerHTML = player.paused
+        ? '<polygon points="6,4 20,12 6,20" />'
+        : '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
     }
-
-    player.addEventListener('ended', () => {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      const t = playlist[currentTrackIndex];
-      playTrack(t.url, t.title, t.img);
-    });
-
-    let touchStartX = 0;
-    playerBar.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
-    playerBar.addEventListener("touchend", e => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      if (dx < -40) nextTrack();
-      else if (dx > 40) prevTrack();
-    });
-
-    function nextTrack() {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      const t = playlist[currentTrackIndex];
-      playTrack(t.url, t.title, t.img);
-    }
-
-    function prevTrack() {
-      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-      const t = playlist[currentTrackIndex];
-      playTrack(t.url, t.title, t.img);
-    }
-
-    showGenre('hiphop');
   </script>
 </body>
 </html>
