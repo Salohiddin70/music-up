@@ -9,12 +9,19 @@
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: url('heart_starry_background.png') no-repeat center center fixed;
-      background-size: cover;
+      background-color: black;
       color: #fff;
       min-height: 100vh;
-      padding-bottom: 100px;
       overflow-x: hidden;
+    }
+
+    #bg-svg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
     }
 
     header {
@@ -25,7 +32,7 @@
       align-items: center;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 10;
     }
 
     .menu-icon, .profile-icon {
@@ -37,12 +44,6 @@
       border-radius: 50%;
       padding: 6px;
       box-shadow: 0 0 12px #40e0d0;
-    }
-
-    .menu-icon svg, .profile-icon svg {
-      width: 100%;
-      height: 100%;
-      stroke-width: 2.5;
     }
 
     .search-bar input {
@@ -66,7 +67,7 @@
       flex-direction: column;
       gap: 15px;
       transition: left 0.3s;
-      z-index: 1000;
+      z-index: 100;
     }
 
     nav.side-menu.open {
@@ -140,7 +141,6 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
 
     .play-btn:hover {
@@ -152,7 +152,6 @@
       width: 20px;
       height: 20px;
       fill: #40e0d0;
-      transition: fill 0.3s ease;
     }
 
     .play-btn:hover svg {
@@ -172,7 +171,6 @@
       backdrop-filter: blur(16px);
       box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
       z-index: 1001;
-      transition: transform 0.4s ease;
     }
 
     #player-info {
@@ -204,7 +202,6 @@
       width: 36px;
       height: 36px;
       fill: #40e0d0;
-      transition: fill 0.3s;
     }
 
     #player-controls svg:hover {
@@ -213,6 +210,13 @@
   </style>
 </head>
 <body onclick="closeMenu(event)">
+  <!-- SVG background -->
+  <div id="bg-svg">
+    <!-- вставим сам SVG код прямо сюда или через fetch -->
+    <!-- Временно укажем ссылку -->
+    <object type="image/svg+xml" data="animated_heart.svg" width="100%" height="100%"></object>
+  </div>
+
   <header>
     <div class="menu-icon" onclick="toggleMenu()">
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -274,9 +278,9 @@
 
     const playlist = [
       { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg", visible: true },
-      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false },
-      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false },
-      { title: "Macan — Останься образом", url: "https://voca.ro/1EmoFWHzaRO6", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false }
+      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: true },
+      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: true },
+      { title: "Macan — Останься образом", url: "https://voca.ro/1EmoFWHzaRO6", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: true }
     ];
 
     let currentTrackIndex = 0;
@@ -319,10 +323,10 @@
 
     const genres = {
       hiphop: [playlist[0]],
-      rap: [],
+      rap: [playlist[1]],
       jazz: [],
       lofi: [],
-      road: []
+      road: [playlist[2], playlist[3]]
     };
 
     function showGenre(genre) {
@@ -362,26 +366,6 @@
       const t = playlist[currentTrackIndex];
       playTrack(t.url, t.title, t.img);
     });
-
-    let touchStartX = 0;
-    playerBar.addEventListener("touchstart", e => touchStartX = e.touches[0].clientX);
-    playerBar.addEventListener("touchend", e => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      if (dx < -40) nextTrack();
-      else if (dx > 40) prevTrack();
-    });
-
-    function nextTrack() {
-      currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-      const t = playlist[currentTrackIndex];
-      playTrack(t.url, t.title, t.img);
-    }
-
-    function prevTrack() {
-      currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-      const t = playlist[currentTrackIndex];
-      playTrack(t.url, t.title, t.img);
-    }
 
     showGenre('hiphop');
   </script>
