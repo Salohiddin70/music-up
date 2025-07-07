@@ -6,24 +6,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Segoe UI', sans-serif;
       color: #fff;
       min-height: 100vh;
-      overflow: hidden;
-      position: relative;
+      background: #000;
+      overflow-x: hidden;
     }
 
-    canvas#background-canvas {
+    /* ФОН: сердце и линии */
+    .background {
       position: fixed;
       top: 0; left: 0;
-      width: 100%; height: 100%;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
       z-index: -1;
     }
 
+    .heart {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px; height: 180px;
+      background: transparent;
+    }
+
+    .dot {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 2s infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .line {
+      position: absolute;
+      width: 2px;
+      height: 100px;
+      background: white;
+      opacity: 0.3;
+      box-shadow: 0 0 12px white;
+      animation: moveLine 5s linear infinite;
+    }
+
+    @keyframes moveLine {
+      0% {
+        transform: translate(var(--x, 0vw), var(--y, 0vh)) rotate(45deg);
+        opacity: 0;
+      }
+      50% { opacity: 1; }
+      100% {
+        transform: translate(50vw, 50vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
     header {
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.6);
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
@@ -37,11 +83,11 @@
       width: 30px;
       height: 30px;
       cursor: pointer;
-      stroke: #fff;
-      background: rgba(255,255,255,0.1);
+      stroke: #40e0d0;
+      background: rgba(0,0,0,0.4);
       border-radius: 50%;
       padding: 6px;
-      box-shadow: 0 0 12px #fff;
+      box-shadow: 0 0 12px #40e0d0;
     }
 
     .menu-icon svg, .profile-icon svg {
@@ -61,8 +107,7 @@
 
     nav.side-menu {
       position: fixed;
-      top: 0;
-      left: -230px;
+      top: 0; left: -230px;
       width: 200px;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.95);
@@ -74,9 +119,7 @@
       z-index: 1000;
     }
 
-    nav.side-menu.open {
-      left: 0;
-    }
+    nav.side-menu.open { left: 0; }
 
     nav.side-menu a {
       color: #ccc;
@@ -84,12 +127,14 @@
       font-size: 16px;
     }
 
+    nav.side-menu a:hover { color: #40e0d0; }
+
     h1 {
       text-align: center;
-      color: #fff;
+      color: #40e0d0;
       margin: 20px 0;
       font-size: 32px;
-      text-shadow: 0 0 12px #fff, 0 0 24px #fff;
+      text-shadow: 0 0 12px #40e0d0, 0 0 24px #1db954;
     }
 
     .genre-menu {
@@ -98,36 +143,43 @@
       white-space: nowrap;
       gap: 10px;
       padding: 10px;
+      background-color: rgba(0,0,0,0.3);
+      z-index: 2;
     }
 
     .genre-button {
       padding: 8px 16px;
       background: transparent;
-      color: #fff;
-      border: 1px solid #fff;
+      color: #40e0d0;
+      border: 1px solid #40e0d0;
       border-radius: 20px;
-      box-shadow: 0 0 10px #fff;
+      box-shadow: 0 0 10px #40e0d0;
       cursor: pointer;
     }
 
     .track-list {
       padding: 20px;
+      z-index: 2;
     }
 
     .track {
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0,0,0,0.4);
       border-radius: 10px;
       padding: 12px;
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+      box-shadow: 0 0 10px rgba(64,224,208,0.2);
+    }
+
+    .track-title {
+      font-size: 15px;
     }
 
     .play-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid #fff;
+      background: rgba(64, 224, 208, 0.1);
+      border: 1px solid #40e0d0;
       border-radius: 50%;
       padding: 8px;
       width: 40px;
@@ -136,16 +188,23 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
     .play-btn:hover {
-      background-color: #fff;
+      background-color: #40e0d0;
+      border-color: #1db954;
     }
 
     .play-btn svg {
       width: 20px;
       height: 20px;
-      fill: #fff;
+      fill: #40e0d0;
+      transition: fill 0.3s ease;
+    }
+
+    .play-btn:hover svg {
+      fill: #000;
     }
 
     #player-bar {
@@ -159,12 +218,9 @@
       padding: 12px 20px;
       background: rgba(255,255,255,0.08);
       backdrop-filter: blur(16px);
+      box-shadow: 0 -2px 14px rgba(64,224,208,0.3);
       z-index: 1001;
-    }
-
-    #player-info {
-      display: flex;
-      align-items: center;
+      transition: transform 0.4s ease;
     }
 
     #track-img {
@@ -172,7 +228,7 @@
       width: 50px;
       border-radius: 10px;
       margin-right: 12px;
-      box-shadow: 0 0 12px #fff;
+      box-shadow: 0 0 12px rgba(64,224,208,0.5);
     }
 
     #track-name {
@@ -180,15 +236,30 @@
       font-weight: bold;
     }
 
+    #player-controls button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
     #player-controls svg {
       width: 36px;
       height: 36px;
-      fill: #fff;
+      fill: #40e0d0;
+      transition: fill 0.3s;
+    }
+
+    #player-controls svg:hover {
+      fill: #1db954;
     }
   </style>
 </head>
 <body onclick="closeMenu(event)">
-  <canvas id="background-canvas"></canvas>
+  <div class="background">
+    <div class="heart" id="heart"></div>
+    <!-- Линии добавляются через JavaScript -->
+  </div>
 
   <header>
     <div class="menu-icon" onclick="toggleMenu()">
@@ -203,11 +274,12 @@
   </header>
 
   <nav class="side-menu" id="side-menu">
-    <a href="#">🏠 Главная</a>
-    <a href="#">🎧 Хип-хоп</a>
-    <a href="#">🎤 Рэп</a>
-    <a href="#">🎷 Джаз</a>
-    <a href="#">🌙 Lo-fi</a>
+    <a href="#" onclick="goHome()">🏠 Главная</a>
+    <a href="#" onclick="showGenre('hiphop')">🎧 Хип-хоп</a>
+    <a href="#" onclick="showGenre('rap')">🎤 Рэп</a>
+    <a href="#" onclick="showGenre('jazz')">🎷 Джаз</a>
+    <a href="#" onclick="showGenre('lofi')">🌙 Lo-fi</a>
+    <a href="#" onclick="showGenre('road')">🛣️ Дорога</a>
   </nav>
 
   <h1>Music Up</h1>
@@ -217,6 +289,7 @@
     <div class="genre-button" onclick="showGenre('rap')">🎤 Рэп</div>
     <div class="genre-button" onclick="showGenre('jazz')">🎷 Джаз</div>
     <div class="genre-button" onclick="showGenre('lofi')">🌙 Lo-fi</div>
+    <div class="genre-button" onclick="showGenre('road')">🛣️ Дорога</div>
   </div>
 
   <div class="track-list" id="genre-tracks"></div>
@@ -238,15 +311,16 @@
   <audio id="player"></audio>
 
   <script>
-    // Музыка
+    // Плеер
     const player = document.getElementById("player"),
           trackName = document.getElementById("track-name"),
           trackImg = document.getElementById("track-img"),
-          genreTracks = document.getElementById("genre-tracks");
+          genreTracks = document.getElementById("genre-tracks"),
+          playIcon = document.getElementById("play-icon");
 
     const playlist = [
-      { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" }
+      { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg", visible: true },
+      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: true },
     ];
 
     let currentTrackIndex = 0;
@@ -260,25 +334,35 @@
     }
 
     function togglePlayPause() {
-      if (player.paused) player.play();
-      else player.pause();
+      if (player.paused) {
+        player.play();
+      } else {
+        player.pause();
+      }
       updatePlayPauseIcon();
     }
 
     function updatePlayPauseIcon() {
-      const icon = document.getElementById("play-icon");
-      icon.innerHTML = player.paused
+      playIcon.innerHTML = player.paused
         ? '<polygon points="6,4 20,12 6,20" />'
         : '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
     }
 
+    const genres = {
+      hiphop: [playlist[0]],
+      rap: [playlist[1]],
+      jazz: [],
+      lofi: [],
+      road: []
+    };
+
     function showGenre(genre) {
-      genreTracks.innerHTML = "";
-      playlist.forEach(track => {
-        const div = document.createElement("div");
-        div.className = "track";
+      genreTracks.innerHTML = '';
+      genres[genre].forEach(track => {
+        const div = document.createElement('div');
+        div.className = 'track';
         div.innerHTML = `
-          <span>${track.title}</span>
+          <span class="track-title">${track.title}</span>
           <button class="play-btn" onclick="playTrack('${track.url}','${track.title}','${track.img}')">
             <svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
           </button>`;
@@ -288,68 +372,42 @@
 
     showGenre('hiphop');
 
-    // Фон-анимация: точки + линии
-    const canvas = document.getElementById("background-canvas");
-    const ctx = canvas.getContext("2d");
-    let width, height, particles = [];
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener("resize", resize);
-    resize();
-
-    function createParticles() {
-      particles = [];
-      for (let i = 0; i < 100; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 1,
-          vy: (Math.random() - 0.5) * 1,
-          radius: Math.random() * 1.5 + 1
-        });
+    // Меню
+    const sideMenu = document.getElementById("side-menu");
+    function toggleMenu() { sideMenu.classList.toggle("open"); }
+    function closeMenu(e) {
+      if (!e.target.closest(".side-menu") && !e.target.closest(".menu-icon")) {
+        sideMenu.classList.remove("open");
       }
     }
 
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "#ffffff";
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      // линии между частицами
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100) {
-            ctx.strokeStyle = "rgba(255,255,255,0.1)";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      requestAnimationFrame(draw);
+    // Анимация сердца
+    const heart = document.getElementById("heart");
+    for (let i = 0; i < 200; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      const angle = Math.PI - (i / 100) * 2 * Math.PI;
+      const x = 16 * Math.pow(Math.sin(angle), 3);
+      const y = 13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle);
+      dot.style.left = `${100 + x * 6}px`;
+      dot.style.top = `${90 - y * 6}px`;
+      heart.appendChild(dot);
     }
 
-    createParticles();
-    draw();
+    // Линии света
+    const background = document.querySelector(".background");
+    function spawnLine() {
+      const line = document.createElement('div');
+      line.className = 'line';
+      const x = Math.random() * 100 + 'vw';
+      const y = Math.random() * 100 + 'vh';
+      line.style.setProperty('--x', x);
+      line.style.setProperty('--y', y);
+      background.appendChild(line);
+      setTimeout(() => background.removeChild(line), 5000);
+    }
+
+    setInterval(spawnLine, 400);
   </script>
 </body>
 </html>
