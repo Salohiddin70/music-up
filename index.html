@@ -128,12 +128,34 @@
       font-size: 15px;
     }
 
-    .track button {
-      background: transparent;
-      border: none;
-      color: #40e0d0;
-      font-size: 22px;
+    .play-btn {
+      background: rgba(64, 224, 208, 0.1);
+      border: 1px solid #40e0d0;
+      border-radius: 50%;
+      padding: 8px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .play-btn:hover {
+      background-color: #40e0d0;
+      border-color: #1db954;
+    }
+
+    .play-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #40e0d0;
+      transition: fill 0.3s ease;
+    }
+
+    .play-btn:hover svg {
+      fill: #000;
     }
 
     #player-bar {
@@ -195,7 +217,7 @@
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </div>
     <div class="search-bar">
-      <input type="text" placeholder="Поиск..." />
+      <input type="text" id="searchInput" placeholder="Поиск..." oninput="filterTracks()" />
     </div>
     <div class="profile-icon">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5.5 21h13a2 2 0 0 0-13 0z"/></svg>
@@ -245,13 +267,15 @@
           trackName = document.getElementById("track-name"),
           trackImg = document.getElementById("track-img"),
           sideMenu = document.getElementById("side-menu"),
-          playPauseButton = document.getElementById("play-pause-button");
+          playPauseButton = document.getElementById("play-pause-button"),
+          searchInput = document.getElementById("searchInput"),
+          genreTracks = document.getElementById("genre-tracks");
 
     const playlist = [
-      { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg" },
-      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" },
-      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" },
-      { title: "Macan — Останься образом", url: "https://voca.ro/1EmoFWHzaRO6", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg" }
+      { title: "Мот — День и ночь", url: "https://media.vocaroo.com/mp3/16ker4KT1gn3", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1963.jpeg", visible: true },
+      { title: "Macan — L", url: "https://media.vocaroo.com/mp3/1iX95z5SQfOM", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false },
+      { title: "Macan — Заново", url: "https://media.vocaroo.com/mp3/1Z155EzK1A4u", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false },
+      { title: "Macan — Останься образом", url: "https://voca.ro/1EmoFWHzaRO6", img: "https://raw.githubusercontent.com/Salohiddin70/music-up/main/IMG_1967.jpeg", visible: false }
     ];
 
     let currentTrackIndex = 0;
@@ -294,21 +318,41 @@
 
     const genres = {
       hiphop: [playlist[0]],
-      rap: [playlist[1]],
+      rap: [],
       jazz: [],
-      lofi: [playlist[2]],
-      road: [...playlist]
+      lofi: [],
+      road: []
     };
 
     function showGenre(genre) {
-      const container = document.getElementById("genre-tracks");
-      container.innerHTML = '';
+      genreTracks.innerHTML = '';
       genres[genre].forEach(track => {
+        if (!track.visible) return;
         const div = document.createElement('div');
         div.className = 'track';
-        div.innerHTML = `<span class="track-title">${track.title}</span>
-          <button onclick="playTrack('${track.url}','${track.title}','${track.img}')">▶️</button>`;
-        container.appendChild(div);
+        div.innerHTML = `
+          <span class="track-title">${track.title}</span>
+          <button class="play-btn" onclick="playTrack('${track.url}','${track.title}','${track.img}')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
+          </button>`;
+        genreTracks.appendChild(div);
+      });
+    }
+
+    function filterTracks() {
+      const query = searchInput.value.toLowerCase();
+      genreTracks.innerHTML = '';
+      playlist.forEach(track => {
+        if (track.title.toLowerCase().includes(query)) {
+          const div = document.createElement('div');
+          div.className = 'track';
+          div.innerHTML = `
+            <span class="track-title">${track.title}</span>
+            <button class="play-btn" onclick="playTrack('${track.url}','${track.title}','${track.img}')">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
+            </button>`;
+          genreTracks.appendChild(div);
+        }
       });
     }
 
